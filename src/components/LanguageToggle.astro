@@ -1,0 +1,34 @@
+---
+import { getCollection } from "astro:content";
+import type { Lang } from "../i18n/strings";
+
+const segments = Astro.url.pathname.split("/").filter(Boolean);
+const currentLang = (segments[0] === "bn" ? "bn" : "en") as Lang;
+const otherLang: Lang = currentLang === "bn" ? "en" : "bn";
+const typeSegment = segments[1];
+const slug = segments[2];
+
+const typeMap: Record<string, "advocate" | "chamber" | "firm"> = {
+  a: "advocate",
+  c: "chamber",
+  f: "firm"
+};
+
+const collectionName = (targetLang: Lang, seg?: string) => {
+  const type = seg ? typeMap[seg] : undefined;
+  if (!type) return null;
+  const suffix = type === "advocate" ? "advocates" : type === "chamber" ? "chambers" : "firms";
+  return `${targetLang}_${suffix}`;
+};
+
+let hasCounterpart = false;
+const targetCollection = collectionName(otherLang, typeSegment);
+if (targetCollection && slug) {
+  const entries = await getCollection(targetCollection as any);
+  hasCounterpart = entries.some((entry) => entry.slug === slug);
+}
+
+const target = hasCounterpart && typeSegment && slug ? `/${otherLang}/${typeSegment}/${slug}` : `/${otherLang}`;
+const label = otherLang === "bn" ? "বাংলা" : "English";
+---
+<a href={target} aria-label={`Switch to ${label}`}>{label}</a>

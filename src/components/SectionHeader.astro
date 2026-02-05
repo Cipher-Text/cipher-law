@@ -1,0 +1,16 @@
+---
+interface Props {
+  tag?: string;
+  title: string;
+  description?: string;
+  gradient?: boolean;
+}
+
+const { tag, title, description, gradient = true } = Astro.props;
+---
+
+<div class="section-header">
+  {tag && <div class="section-tag">{tag}</div>}
+  <h2 class:list={["section-title", { "gradient-text": gradient }]}>{title}</h2>
+  {description && <p class="section-description">{description}</p>}
+</div>

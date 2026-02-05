@@ -1,0 +1,54 @@
+---
+interface ValueItem {
+  icon?: string;
+  title: string;
+  description?: string;
+}
+
+interface Props {
+  items: ValueItem[];
+}
+
+const { items } = Astro.props;
+
+const iconMap: Record<string, string> = {
+  "Track Record": "🏆",
+  "Proven": "🏆",
+  "Market": "🏆",
+  "Leader": "🏆",
+  "Expert": "👥",
+  "Team": "👥",
+  "Swift": "⚡",
+  "Rapid": "⚡",
+  "Fast": "⚡",
+  "Client": "💼",
+  "Focused": "🎯",
+  "Research": "📚",
+  "Global": "🌍",
+  "Network": "🌐",
+  "International": "🌍",
+  "Innovative": "💡",
+  "Solution": "💡",
+  "Industry": "📊"
+};
+
+const getEmoji = (item: ValueItem): string => {
+  if (item.icon) return item.icon;
+  for (const [key, emoji] of Object.entries(iconMap)) {
+    if (item.title.includes(key)) return emoji;
+  }
+  return "✓";
+};
+---
+
+{items.length > 0 && (
+  <div class="why-grid">
+    {items.map((item) => (
+      <div class="why-card">
+        <div class="why-icon">{getEmoji(item)}</div>
+        <h3 class="why-title">{item.title}</h3>
+        {item.description && <p class="why-text">{item.description}</p>}
+      </div>
+    ))}
+  </div>
+)}

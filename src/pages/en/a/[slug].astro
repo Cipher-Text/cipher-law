@@ -1,0 +1,18 @@
+---
+import { getCollection } from "astro:content";
+import AdvocateLayout from "../../../layouts/AdvocateLayout.astro";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("en_advocates");
+  return entries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry }
+  }));
+}
+
+const { entry } = Astro.props as { entry: any };
+const { Content } = await entry.render();
+---
+<AdvocateLayout lang="en" entry={entry} body={entry.body}>
+  <Content />
+</AdvocateLayout>

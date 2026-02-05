@@ -1,0 +1,120 @@
+---
+import type { Lang } from "../i18n/strings";
+import { t } from "../i18n/strings";
+import SeoHead from "../components/SeoHead.astro";
+import LanguageToggle from "../components/LanguageToggle.astro";
+import "../styles/global.css";
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description?: string;
+  canonical?: string;
+  type?: "advocate" | "chamber" | "firm";
+  slug?: string;
+  entity?: any;
+  showDefaultLayout?: boolean;
+}
+
+const {
+  lang,
+  title,
+  description,
+  canonical,
+  type,
+  slug,
+  entity,
+  showDefaultLayout = false
+} = Astro.props as Props;
+
+const base = `/${lang}`;
+const isProfile = Boolean(type);
+---
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <SeoHead
+      lang={lang}
+      title={title}
+      description={description}
+      canonical={canonical}
+      type={type}
+      slug={slug}
+      entity={entity}
+    />
+  </head>
+  <body>
+    {/* For profile pages, the layout handles its own navigation */}
+    {!isProfile && showDefaultLayout && (
+      <header class="default-header">
+        <div class="logo-container">
+          <a href={base} class="logo-text">
+            <span class="logo-main" style="color: var(--accent);">⚖️ Cipher Law</span>
+          </a>
+        </div>
+        <nav class="nav-menu">
+          <a href={base}>{t(lang, "home")}</a>
+          <a href="#advocates">{t(lang, "advocates")}</a>
+          <a href="#chambers">{t(lang, "chambers")}</a>
+          <a href="#firms">{t(lang, "firms")}</a>
+        </nav>
+        <LanguageToggle />
+      </header>
+    )}
+
+    <main>
+      <slot />
+    </main>
+
+    {/* Default footer only for non-profile pages */}
+    {!isProfile && showDefaultLayout && (
+      <footer class="default-footer">
+        <p class="muted">
+          {t(lang, "disclaimer")}: {lang === "bn"
+            ? "এটি একটি ডিরেক্টরি প্রোফাইল; এটি কোনো আইনি পরামর্শ নয়।"
+            : "This is a directory profile, not legal advice."}
+        </p>
+      </footer>
+    )}
+  </body>
+</html>
+
+<style>
+  .default-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(10, 10, 10, 0.98);
+    backdrop-filter: blur(20px);
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .default-header .nav-menu {
+    display: flex;
+    gap: 30px;
+    list-style: none;
+  }
+
+  .default-header .nav-menu a {
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+  .default-footer {
+    padding: 40px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+  }
+
+  main {
+    min-height: 100vh;
+  }
+</style>

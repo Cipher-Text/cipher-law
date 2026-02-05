@@ -1,0 +1,152 @@
+---
+interface ValueItem {
+  icon?: string;
+  title: string;
+  description?: string;
+}
+
+interface FeatureItem {
+  icon?: string;
+  text: string;
+}
+
+interface About {
+  heading?: string;
+  paragraphs?: string[];
+  features?: FeatureItem[];
+  values?: ValueItem[];
+}
+
+interface MiniStats {
+  casesWon?: number;
+  years?: number;
+  successRate?: number;
+}
+
+interface Props {
+  about?: About;
+  miniStats?: MiniStats;
+  showVisual?: boolean;
+  reversed?: boolean;
+}
+
+const { about, miniStats, showVisual = true, reversed = false } = Astro.props;
+
+const iconMap: Record<string, string> = {
+  "courthouse": "🏛️",
+  "users": "👥",
+  "globe": "🌍",
+  "book": "📚",
+  "target": "🎯",
+  "lightning": "⚡"
+};
+
+const getEmoji = (icon?: string): string => {
+  if (!icon) return "✓";
+  return iconMap[icon] || icon;
+};
+---
+
+{about && (
+  <div class:list={["about-grid", { reversed }]}>
+    <div class="about-content">
+      {about.heading && <h2>{about.heading}</h2>}
+      {about.paragraphs?.map((p) => <p>{p}</p>)}
+
+      {about.features && about.features.length > 0 && (
+        <div class="values-list">
+          {about.features.map((f) => (
+            <div class="value-item">
+              <div class="value-icon">{getEmoji(f.icon)}</div>
+              <div class="value-text">
+                <p style="margin: 0; color: var(--text-secondary);">{f.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {about.values && about.values.length > 0 && (
+        <div class="values-list">
+          {about.values.map((v) => (
+            <div class="value-item">
+              <div class="value-icon">{getEmoji(v.icon)}</div>
+              <div class="value-text">
+                <h4>{v.title}</h4>
+                {v.description && <p>{v.description}</p>}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+
+    {showVisual && (
+      <div class="about-visual">
+        <span class="visual-icon">⚖️</span>
+        {miniStats && (
+          <div class="mini-stats">
+            {miniStats.casesWon && (
+              <div class="mini-stat">
+                <div class="mini-stat-number">{miniStats.casesWon}+</div>
+                <div class="mini-stat-label">CASES WON</div>
+              </div>
+            )}
+            {miniStats.years && (
+              <div class="mini-stat">
+                <div class="mini-stat-number">{miniStats.years}+</div>
+                <div class="mini-stat-label">YEARS</div>
+              </div>
+            )}
+            {miniStats.successRate && (
+              <div class="mini-stat">
+                <div class="mini-stat-number">{miniStats.successRate}%</div>
+                <div class="mini-stat-label">SUCCESS</div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    )}
+  </div>
+)}
+
+<style>
+  .about-grid.reversed {
+    direction: rtl;
+  }
+
+  .about-grid.reversed > * {
+    direction: ltr;
+  }
+
+  .mini-stats {
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
+    right: 30px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+  }
+
+  .mini-stat {
+    background: rgba(10, 10, 10, 0.9);
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid var(--border);
+  }
+
+  .mini-stat-number {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--accent);
+  }
+
+  .mini-stat-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+</style>

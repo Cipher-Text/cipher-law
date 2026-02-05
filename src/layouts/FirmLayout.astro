@@ -1,0 +1,207 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Navbar from "../components/Navbar.astro";
+import StatsBar from "../components/StatsBar.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import AboutSection from "../components/AboutSection.astro";
+import PracticeGrid from "../components/PracticeGrid.astro";
+import PartnersGrid from "../components/PartnersGrid.astro";
+import WhyChooseUs from "../components/WhyChooseUs.astro";
+import ContactSection from "../components/ContactSection.astro";
+import PremiumFooter from "../components/PremiumFooter.astro";
+import type { Lang } from "../i18n/strings";
+import { t } from "../i18n/strings";
+
+interface Props {
+  lang: Lang;
+  entry: any;
+  body: string;
+}
+
+const { lang, entry, body } = Astro.props;
+const data = entry.data;
+
+// Extract hero data
+const hero = data.hero || {};
+const badge = hero.badge || "BANGLADESH'S LEADING LAW FIRM";
+const headline = hero.subtitle || "Strategic legal solutions for corporations, multinationals, and global businesses";
+const description = hero.description || body.split(/\n\s*\n/)[0]?.replace(/^#+\s*/g, "").trim();
+
+// Stats
+const stats = data.stats?.length > 0 ? data.stats : [
+  { number: "1000+", label: lang === "bn" ? "মামলা সমাধান" : "Cases Resolved" },
+  { number: "20+", label: lang === "bn" ? "বছর প্রতিষ্ঠিত" : "Years Established" },
+  { number: "50+", label: lang === "bn" ? "কর্পোরেট ক্লায়েন্ট" : "Corporate Clients" },
+  { number: "15+", label: lang === "bn" ? "অনুশীলন গ্রুপ" : "Practice Groups" }
+];
+
+// Practice Areas/Groups
+const practiceAreas = data.practiceAreas?.length > 0 ? data.practiceAreas : [];
+
+// Partners
+const partners = data.partners?.length > 0 ? data.partners : [];
+
+// Why Choose Us
+const whyChooseUs = data.whyChooseUs?.length > 0 ? data.whyChooseUs : [];
+
+// About
+const about = data.about || {};
+
+// Logo
+const logo = data.logo || {
+  icon: data.title.split(" ").map((w: string) => w[0]).slice(0, 2).join(""),
+  main: data.title.toUpperCase(),
+  sub: "LEGAL"
+};
+
+// SEO
+const seoTitle = data.seo?.title ?? data.title;
+const seoDescription = data.seo?.description ?? description;
+
+// Show toggles
+const show = data.show || {};
+---
+
+<BaseLayout
+  lang={lang}
+  title={seoTitle}
+  description={seoDescription}
+  canonical={data.seo?.canonical}
+  type="firm"
+  slug={entry.slug}
+  entity={data}
+>
+  <!-- Navigation -->
+  <Navbar
+    logo={logo}
+    navLinks={data.navLinks?.length > 0 ? data.navLinks : ["FIRM", "PRACTICE AREAS", "PARTNERS", "CONTACT"]}
+    ctaLabel={lang === "bn" ? "পরামর্শ নিন" : "CONSULT NOW"}
+    lang={lang}
+  />
+
+  <!-- Hero Section -->
+  <section class="hero" style="margin-top: 90px;">
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        {badge}
+      </div>
+      <h1 class="gradient-text">
+        {lang === "bn" ? "আইনি উৎকর্ষতা\nপুনঃসংজ্ঞায়িত" : "Legal Excellence\nRedefined"}
+      </h1>
+      <p class="hero-subtitle">{headline}</p>
+      {description && <p class="hero-description">{description}</p>}
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-primary">
+          {lang === "bn" ? "পরামর্শের সময় নির্ধারণ করুন" : "SCHEDULE CONSULTATION"}
+        </a>
+        <a href="#services" class="btn btn-outline">
+          {lang === "bn" ? "সেবাসমূহ দেখুন" : "EXPLORE SERVICES"}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Bar -->
+  {show.stats !== false && (
+    <StatsBar stats={stats} />
+  )}
+
+  <!-- About Section -->
+  <section class="section section-dark" id="about">
+    <div class="about-grid">
+      <div class="about-content">
+        <h2>{about.heading || data.title}</h2>
+        {about.paragraphs?.map((p: string) => <p>{p}</p>)}
+        {about.values && about.values.length > 0 && (
+          <div class="values-list">
+            {about.values.map((v: any) => (
+              <div class="value-item">
+                <div class="value-icon">{v.icon || "🎯"}</div>
+                <div class="value-text">
+                  <h4>{v.title}</h4>
+                  {v.description && <p>{v.description}</p>}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      <div class="about-visual">
+        <span class="visual-icon">⚖️</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Practice Groups -->
+  {show.services !== false && practiceAreas.length > 0 && (
+    <section class="section section-gradient-reverse" id="services">
+      <SectionHeader
+        tag={lang === "bn" ? "ব্যাপক আইনি সেবা" : "COMPREHENSIVE LEGAL SERVICES"}
+        title={lang === "bn" ? "অনুশীলন গ্রুপসমূহ" : "Practice Groups"}
+        description={lang === "bn" ? "বিভিন্ন এখতিয়ার ও শিল্পে সমন্বিত আইনি সমাধান প্রদানকারী বিশেষায়িত দলসমূহ" : "Specialized teams delivering integrated legal solutions across multiple jurisdictions and industries"}
+      />
+      <PracticeGrid practiceAreas={practiceAreas} />
+    </section>
+  )}
+
+  <!-- Partners Section -->
+  {partners.length > 0 && (
+    <section class="section section-dark" id="partners">
+      <SectionHeader
+        tag={lang === "bn" ? "নেতৃত্ব দল" : "LEADERSHIP TEAM"}
+        title={lang === "bn" ? "ব্যবস্থাপনা অংশীদার" : "Managing Partners"}
+        description={lang === "bn" ? "দশকের সম্মিলিত অভিজ্ঞতাসম্পন্ন শিল্প-নেতৃস্থানীয় আইনি পেশাদারগণ" : "Industry-leading legal professionals with decades of combined experience"}
+      />
+      <PartnersGrid partners={partners} />
+    </section>
+  )}
+
+  <!-- Why Choose Us -->
+  {show.whyChooseUs !== false && whyChooseUs.length > 0 && (
+    <section class="section section-gradient-reverse">
+      <SectionHeader
+        tag={lang === "bn" ? "প্রতিযোগিতামূলক সুবিধা" : "COMPETITIVE ADVANTAGE"}
+        title={lang === "bn" ? `কেন ${data.title}` : `Why ${data.title}`}
+      />
+      <WhyChooseUs items={whyChooseUs} />
+    </section>
+  )}
+
+  <!-- Contact Section -->
+  {show.quickContact !== false && (
+    <section class="section section-dark" id="contact">
+      <SectionHeader
+        tag={lang === "bn" ? "যোগাযোগ করুন" : "GET IN TOUCH"}
+        title={lang === "bn" ? "আপনার আইনি প্রয়োজনীয়তা নিয়ে আলোচনা করুন" : "Let's Discuss Your Legal Needs"}
+      />
+      <ContactSection
+        contact={data.contact}
+        location={data.location}
+        heading={lang === "bn" ? "যোগাযোগ করুন" : "Contact Us"}
+        subheading={lang === "bn" ? "আমাদের দল আপনার ব্যবসার জন্য কৌশলগত আইনি পরামর্শ প্রদানে প্রস্তুত।" : "Our team is ready to provide strategic legal counsel for your business."}
+        showMap={true}
+      />
+    </section>
+  )}
+
+  <!-- Body Content (if any) -->
+  {body.trim() && (
+    <section class="section section-dark">
+      <div style="max-width: 800px; margin: 0 auto;">
+        <slot />
+      </div>
+    </section>
+  )}
+
+  <!-- Footer -->
+  <PremiumFooter
+    brandName={data.title}
+    brandDescription={about.paragraphs?.[0]}
+    brandCredential="Bangladesh Bar Council Registered | Supreme Court Advocates"
+    footerLinks={data.footerLinks}
+    tagline={data.tagline || "Strategic Legal Excellence | Trusted by Bangladesh's Leading Corporations"}
+    lang={lang}
+  />
+</BaseLayout>

@@ -1,0 +1,92 @@
+---
+import { getCollection } from "astro:content";
+import type { Lang } from "../i18n/strings";
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description?: string;
+  canonical?: string;
+  type?: "advocate" | "chamber" | "firm";
+  slug?: string;
+  entity?: any;
+}
+
+const { lang, title, description, canonical, type, slug, entity } = Astro.props as Props;
+
+const otherLang: Lang = lang === "bn" ? "en" : "bn";
+
+const typeSegment = type
+  ? ({ advocate: "a", chamber: "c", firm: "f" } as const)[type]
+  : null;
+
+const pathBase = `/${lang}`;
+const otherBase = `/${otherLang}`;
+const selfPath = typeSegment && slug ? `${pathBase}/${typeSegment}/${slug}` : pathBase;
+
+const collectionName = (targetLang: Lang, targetType?: Props["type"]) => {
+  if (!targetType) return null;
+  const suffix =
+    targetType === "advocate"
+      ? "advocates"
+      : targetType === "chamber"
+        ? "chambers"
+        : "firms";
+  return `${targetLang}_${suffix}`;
+};
+
+let otherHas = false;
+const otherCollection = collectionName(otherLang, type);
+if (typeSegment && slug && otherCollection) {
+  const entries = await getCollection(otherCollection as any);
+  otherHas = entries.some((entry) => entry.slug === slug);
+}
+
+const otherPath = typeSegment && slug && otherHas ? `${otherBase}/${typeSegment}/${slug}` : otherBase;
+
+const origin = Astro.site ?? new URL(Astro.url.origin);
+const toAbs = (path: string) => new URL(path, origin).href;
+
+const canonicalUrl = canonical ?? toAbs(selfPath);
+const otherUrl = toAbs(otherPath);
+const selfUrl = toAbs(selfPath);
+
+const socialLinks = entity?.social
+  ? Object.values(entity.social).filter(Boolean)
+  : [];
+
+const address = entity?.location
+  ? {
+      "@type": "PostalAddress",
+      streetAddress: entity.location.address,
+      addressLocality: entity.location.city,
+      addressRegion: entity.location.district,
+      addressCountry: entity.location.country
+    }
+  : undefined;
+
+const jsonLd = entity
+  ? {
+      "@context": "https://schema.org",
+      "@type": type === "advocate" ? "ProfessionalService" : ["LegalService", "LocalBusiness"],
+      name: entity.title,
+      url: selfUrl,
+      address,
+      telephone: entity.contact?.phone,
+      email: entity.contact?.email,
+      areaServed: entity.location?.district,
+      sameAs: socialLinks.length ? socialLinks : undefined
+    }
+  : null;
+---
+<title>{title}</title>
+{description && <meta name="description" content={description} />}
+<link rel="canonical" href={canonicalUrl} />
+<link rel="alternate" hreflang={lang} href={selfUrl} />
+<link rel="alternate" hreflang={otherLang} href={otherUrl} />
+<link rel="alternate" hreflang="x-default" href={toAbs("/en")} />
+{jsonLd && (
+  <script type="application/ld+json">
+    {JSON.stringify(jsonLd)}
+  </script>
+)}

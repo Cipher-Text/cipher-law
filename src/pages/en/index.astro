@@ -1,0 +1,363 @@
+---
+import { getCollection } from "astro:content";
+import CardsGrid from "../../components/CardsGrid.astro";
+import Navbar from "../../components/Navbar.astro";
+import PremiumFooter from "../../components/PremiumFooter.astro";
+import SeoHead from "../../components/SeoHead.astro";
+import { t } from "../../i18n/strings";
+import districts from "../../content/lookups/districts.json";
+import practiceAreas from "../../content/lookups/practice-areas.json";
+import "../../styles/global.css";
+
+const lang = "en" as const;
+
+const nameFor = (items: any[], id?: string) => {
+  const match = items.find((item) => item.id === id);
+  if (!match) return null;
+  return match.name_en;
+};
+
+const resolveList = (ids: string[] = [], items: any[]) =>
+  ids.map((id) => nameFor(items, id)).filter(Boolean) as string[];
+
+const advocates = await getCollection("en_advocates");
+const chambers = await getCollection("en_chambers");
+const firms = await getCollection("en_firms");
+
+const toCard = (entry: any) => {
+  const districtName = nameFor(districts as any[], entry.data.location?.district) ?? "";
+  const areaIds = entry.data.practiceAreaIds || entry.data.practiceAreas?.map((p: any) => typeof p === 'string' ? p : p.title) || [];
+  const practiceNames = typeof areaIds[0] === 'string' && !areaIds[0].includes(' ')
+    ? resolveList(areaIds, practiceAreas as any[])
+    : areaIds.slice(0, 3);
+  const typeSegment = entry.data.type === "advocate" ? "a" : entry.data.type === "chamber" ? "c" : "f";
+  return {
+    title: entry.data.title,
+    href: `/en/${typeSegment}/${entry.slug}`,
+    type: entry.data.type,
+    district: districtName,
+    practiceAreas: practiceNames,
+    verification: entry.data.verification
+  };
+};
+
+const combined = [...advocates, ...chambers, ...firms].sort((a, b) => {
+  const aDate = new Date(a.data.verification?.lastCheckedAt ?? 0).getTime();
+  const bDate = new Date(b.data.verification?.lastCheckedAt ?? 0).getTime();
+  return bDate - aDate;
+});
+
+const latestCards = combined.map(toCard);
+const advocateCards = advocates.map(toCard);
+const chamberCards = chambers.map(toCard);
+const firmCards = firms.map(toCard);
+
+const totalProfiles = advocates.length + chambers.length + firms.length;
+---
+
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <SeoHead
+      lang={lang}
+      title="Cipher Law - Legal Directory Bangladesh"
+      description="Find verified advocates, chambers, and law firms in Bangladesh. A markdown-first legal directory."
+    />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <Navbar
+      brandName="Cipher Law"
+      navLinks={["ADVOCATES", "CHAMBERS", "FIRMS"]}
+      lang={lang}
+    />
+
+    <!-- Hero Section -->
+    <section class="home-hero">
+      <div class="hero-grid"></div>
+      <div class="home-hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          LEGAL DIRECTORY BANGLADESH
+        </div>
+        <h1 class="gradient-text">Cipher Law</h1>
+        <p class="home-hero-tagline">Find Trusted Legal Professionals</p>
+        <p class="home-hero-description">
+          A comprehensive directory of verified advocates, chambers, and law firms in Bangladesh.
+          Search by location, practice area, or name to find the right legal professional for your needs.
+        </p>
+
+        <!-- Stats -->
+        <div class="home-stats">
+          <div class="home-stat">
+            <span class="home-stat-number">{advocates.length}</span>
+            <span class="home-stat-label">Advocates</span>
+          </div>
+          <div class="home-stat">
+            <span class="home-stat-number">{chambers.length}</span>
+            <span class="home-stat-label">Chambers</span>
+          </div>
+          <div class="home-stat">
+            <span class="home-stat-number">{firms.length}</span>
+            <span class="home-stat-label">Law Firms</span>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="home-cta">
+          <a href="#profiles" class="btn btn-primary">Browse Profiles</a>
+          <a href="#advocates" class="btn btn-outline">View Advocates</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section" id="profiles">
+      <div class="search-container">
+        <h2 class="search-title">Search Legal Professionals</h2>
+        <p class="search-subtitle">Find advocates, chambers, and firms by name, location, or practice area</p>
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input
+            id="filter-input"
+            type="text"
+            placeholder="Try: Dhaka, Corporate Law, Supreme Court..."
+            class="search-input"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Latest Profiles -->
+    <section class="directory-section">
+      <div class="section-header">
+        <div class="section-tag">RECENTLY UPDATED</div>
+        <h2 class="section-title">Latest Profiles</h2>
+      </div>
+      <CardsGrid lang={lang} entries={latestCards} />
+    </section>
+
+    <!-- Advocates -->
+    <section class="directory-section section-alt" id="advocates">
+      <div class="section-header">
+        <div class="section-tag">LEGAL PROFESSIONALS</div>
+        <h2 class="section-title">Advocates</h2>
+        <p class="section-description">Individual advocates practicing in Bangladesh courts</p>
+      </div>
+      <CardsGrid lang={lang} entries={advocateCards} />
+    </section>
+
+    <!-- Chambers -->
+    <section class="directory-section" id="chambers">
+      <div class="section-header">
+        <div class="section-tag">LEGAL CHAMBERS</div>
+        <h2 class="section-title">Chambers</h2>
+        <p class="section-description">Legal chambers with teams of advocates</p>
+      </div>
+      <CardsGrid lang={lang} entries={chamberCards} />
+    </section>
+
+    <!-- Firms -->
+    <section class="directory-section section-alt" id="firms">
+      <div class="section-header">
+        <div class="section-tag">LAW FIRMS</div>
+        <h2 class="section-title">Law Firms</h2>
+        <p class="section-description">Full-service law firms in Bangladesh</p>
+      </div>
+      <CardsGrid lang={lang} entries={firmCards} />
+    </section>
+
+    <!-- Footer -->
+    <PremiumFooter
+      brandName="Cipher Law"
+      brandDescription="A markdown-first directory of legal professionals in Bangladesh. Find verified advocates, chambers, and law firms."
+      brandCredential="Open Source Legal Directory"
+      tagline="Connecting People with Trusted Legal Professionals"
+      lang={lang}
+    />
+
+    <script>
+      const input = document.getElementById("filter-input");
+      const cards = Array.from(document.querySelectorAll("[data-card]"));
+      if (input) {
+        input.addEventListener("input", (event) => {
+          const value = (event.target as HTMLInputElement).value.toLowerCase().trim();
+          cards.forEach((card) => {
+            const haystack = card.getAttribute("data-search") || "";
+            const show = !value || haystack.includes(value);
+            (card as HTMLElement).style.display = show ? "flex" : "none";
+          });
+        });
+      }
+    </script>
+  </body>
+</html>
+
+<style>
+  /* Home Hero */
+  .home-hero {
+    min-height: 100vh;
+    background: radial-gradient(ellipse at top, rgba(197, 163, 103, 0.15), transparent 70%),
+                linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 140px 20px 80px;
+  }
+
+  .home-hero-content {
+    text-align: center;
+    z-index: 2;
+    max-width: 900px;
+  }
+
+  .home-hero h1 {
+    font-size: clamp(48px, 10vw, 96px);
+    font-weight: 900;
+    margin-bottom: 16px;
+    letter-spacing: -2px;
+  }
+
+  .home-hero-tagline {
+    font-size: clamp(20px, 3vw, 28px);
+    color: var(--accent);
+    margin-bottom: 20px;
+    font-weight: 300;
+    letter-spacing: 2px;
+  }
+
+  .home-hero-description {
+    font-size: 17px;
+    color: var(--text-muted);
+    max-width: 700px;
+    margin: 0 auto 40px;
+    line-height: 1.8;
+  }
+
+  .home-stats {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    margin-bottom: 40px;
+  }
+
+  .home-stat {
+    text-align: center;
+  }
+
+  .home-stat-number {
+    display: block;
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--accent);
+  }
+
+  .home-stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .home-cta {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* Search Section */
+  .search-section {
+    background: var(--bg-primary);
+    padding: 80px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .search-container {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .search-title {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+
+  .search-subtitle {
+    color: var(--text-muted);
+    margin-bottom: 30px;
+  }
+
+  .search-box {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 20px 20px 20px 55px;
+    font-size: 16px;
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+  }
+
+  .search-input::placeholder {
+    color: var(--text-muted);
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 30px var(--accent-glow);
+  }
+
+  /* Directory Sections */
+  .directory-section {
+    padding: 100px 20px;
+    background: var(--bg-primary);
+  }
+
+  .directory-section.section-alt {
+    background: linear-gradient(180deg, var(--bg-secondary), var(--bg-primary));
+  }
+
+  .directory-section .section-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .directory-section .section-title {
+    font-size: clamp(32px, 5vw, 48px);
+  }
+
+  @media (max-width: 768px) {
+    .home-stats {
+      gap: 30px;
+    }
+
+    .home-stat-number {
+      font-size: 32px;
+    }
+
+    .directory-section {
+      padding: 60px 20px;
+    }
+  }
+</style>

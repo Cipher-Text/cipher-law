@@ -1,0 +1,151 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Hero from "../components/Hero.astro";
+import StatsBar from "../components/StatsBar.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import ServicesGrid from "../components/ServicesGrid.astro";
+import ExpertiseSection from "../components/ExpertiseSection.astro";
+import CredentialsGrid from "../components/CredentialsGrid.astro";
+import ContactSection from "../components/ContactSection.astro";
+import PremiumFooter from "../components/PremiumFooter.astro";
+import type { Lang } from "../i18n/strings";
+import { t } from "../i18n/strings";
+
+interface Props {
+  lang: Lang;
+  entry: any;
+  body: string;
+}
+
+const { lang, entry, body } = Astro.props;
+const data = entry.data;
+
+// Extract hero data
+const hero = data.hero || {};
+const badge = hero.badge || data.advocate?.level || "ADVOCATE";
+const tagline = hero.tagline || "Legal Excellence | Justice Delivered";
+const description = hero.description || body.split(/\n\s*\n/)[0]?.replace(/^#+\s*/g, "").trim();
+
+// Stats
+const stats = data.stats?.length > 0 ? data.stats : [
+  { number: "500+", label: lang === "bn" ? "মামলা জয়" : "Cases Won" },
+  { number: "15+", label: lang === "bn" ? "বছরের অভিজ্ঞতা" : "Years Experience" },
+  { number: "98%", label: lang === "bn" ? "সফলতার হার" : "Success Rate" }
+];
+
+// Services
+const services = data.services?.length > 0 ? data.services : [];
+
+// Expertise
+const expertise = data.expertise?.length > 0 ? data.expertise : [];
+
+// Credentials
+const credentials = data.credentials?.length > 0 ? data.credentials : [];
+
+// SEO
+const seoTitle = data.seo?.title ?? data.title;
+const seoDescription = data.seo?.description ?? description;
+
+// Show toggles
+const show = data.show || {};
+---
+
+<BaseLayout
+  lang={lang}
+  title={seoTitle}
+  description={seoDescription}
+  canonical={data.seo?.canonical}
+  type="advocate"
+  slug={entry.slug}
+  entity={data}
+>
+  <!-- Hero Section -->
+  <Hero
+    badge={badge}
+    title={data.title}
+    tagline={tagline}
+    description={description}
+    primaryCta={{
+      label: lang === "bn" ? "পরামর্শের জন্য যোগাযোগ করুন" : "Schedule Consultation",
+      href: "#contact"
+    }}
+    secondaryCta={{
+      label: lang === "bn" ? "সেবাসমূহ দেখুন" : "Explore Services",
+      href: "#services"
+    }}
+    showScrollIndicator={true}
+  />
+
+  <!-- Stats Section -->
+  {show.stats !== false && (
+    <StatsBar stats={stats} />
+  )}
+
+  <!-- Services Section -->
+  {show.services !== false && services.length > 0 && (
+    <section class="section section-dark" id="services">
+      <SectionHeader
+        tag={lang === "bn" ? "আমি যা প্রদান করি" : "WHAT I OFFER"}
+        title={lang === "bn" ? "আইনি সেবাসমূহ" : "Legal Services"}
+        description={lang === "bn" ? "আপনার প্রয়োজন অনুযায়ী ব্যাপক আইনি সমাধান" : "Comprehensive legal solutions tailored to your needs, backed by expertise and proven results"}
+      />
+      <ServicesGrid services={services} />
+    </section>
+  )}
+
+  <!-- Expertise Section -->
+  {show.expertise !== false && expertise.length > 0 && (
+    <section class="section section-gradient" id="expertise">
+      <SectionHeader
+        tag={lang === "bn" ? "বিশেষজ্ঞ ক্ষেত্রসমূহ" : "SPECIALIZED PRACTICE AREAS"}
+        title={lang === "bn" ? "দক্ষতার ক্ষেত্র" : "Areas of Expertise"}
+      />
+      <ExpertiseSection expertise={expertise} showVisual={true} />
+    </section>
+  )}
+
+  <!-- Credentials Section -->
+  {show.credentials !== false && credentials.length > 0 && (
+    <section class="section section-dark" id="credentials">
+      <SectionHeader
+        tag={lang === "bn" ? "যোগ্যতা ও স্বীকৃতি" : "QUALIFICATIONS & RECOGNITION"}
+        title={lang === "bn" ? "পেশাদার প্রমাণপত্র" : "Professional Credentials"}
+      />
+      <CredentialsGrid credentials={credentials} />
+    </section>
+  )}
+
+  <!-- Contact Section -->
+  {show.quickContact !== false && (
+    <section class="section section-gradient" id="contact">
+      <SectionHeader
+        tag={lang === "bn" ? "যোগাযোগ" : "GET IN TOUCH"}
+        title={lang === "bn" ? "আপনার মামলা নিয়ে আলোচনা করুন" : "Let's Discuss Your Case"}
+        description={lang === "bn" ? "গোপনীয় পরামর্শের জন্য যোগাযোগ করুন" : "Schedule a confidential consultation to explore your legal options"}
+      />
+      <ContactSection
+        contact={data.contact}
+        location={data.location}
+        heading={lang === "bn" ? "যোগাযোগ করুন" : "Contact"}
+        showMap={false}
+      />
+    </section>
+  )}
+
+  <!-- Body Content (if any) -->
+  {body.trim() && (
+    <section class="section section-dark">
+      <div style="max-width: 800px; margin: 0 auto;">
+        <slot />
+      </div>
+    </section>
+  )}
+
+  <!-- Footer -->
+  <PremiumFooter
+    brandName={data.title}
+    brandCredential={data.advocate?.chamberName || "Bangladesh Bar Council Registered"}
+    motto={data.motto || "Justice Delayed is Justice Denied"}
+    lang={lang}
+  />
+</BaseLayout>

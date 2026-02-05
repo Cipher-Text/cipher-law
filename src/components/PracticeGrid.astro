@@ -1,0 +1,65 @@
+---
+interface PracticeArea {
+  icon?: string;
+  title: string;
+  description?: string;
+  services?: string[];
+}
+
+interface Props {
+  practiceAreas: PracticeArea[];
+}
+
+const { practiceAreas } = Astro.props;
+
+const iconMap: Record<string, string> = {
+  "Supreme Court": "⚖️",
+  "Corporate": "🏢",
+  "Banking": "🏦",
+  "Property": "🏠",
+  "Real Estate": "🏗️",
+  "International": "🌐",
+  "Trade": "🌍",
+  "Intellectual": "🔒",
+  "Tax": "📊",
+  "Regulatory": "📋",
+  "Criminal": "🛡️",
+  "Litigation": "🏛️",
+  "Arbitration": "⚖️",
+  "Family": "👨‍👩‍👧",
+  "Labor": "👥",
+  "Employment": "👥",
+  "Energy": "⚡",
+  "Infrastructure": "🏗️",
+  "M&A": "🏢"
+};
+
+const getEmoji = (area: PracticeArea): string => {
+  if (area.icon) return area.icon;
+  for (const [key, emoji] of Object.entries(iconMap)) {
+    if (area.title.includes(key)) return emoji;
+  }
+  return "⚖️";
+};
+---
+
+{practiceAreas.length > 0 && (
+  <div class="cards-grid">
+    {practiceAreas.map((area) => (
+      <div class="card">
+        <span class="card-icon">{getEmoji(area)}</span>
+        <h3 class="card-title">{area.title}</h3>
+        {area.description && (
+          <p class="card-description">{area.description}</p>
+        )}
+        {area.services && area.services.length > 0 && (
+          <ul class="card-list">
+            {area.services.map((service) => (
+              <li>{service}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+    ))}
+  </div>
+)}

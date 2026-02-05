@@ -1,0 +1,9 @@
+[
+  { "id": "family-law", "name_bn": "পারিবারিক আইন", "name_en": "Family Law" },
+  { "id": "criminal-law", "name_bn": "ফৌজদারি আইন", "name_en": "Criminal Law" },
+  { "id": "civil-litigation", "name_bn": "সিভিল লিটিগেশন", "name_en": "Civil Litigation" },
+  { "id": "ni-act-138", "name_bn": "এনআই অ্যাক্ট ১৩৮", "name_en": "NI Act 138" },
+  { "id": "company-law", "name_bn": "কোম্পানি আইন", "name_en": "Company Law" },
+  { "id": "labour-law", "name_bn": "শ্রম আইন", "name_en": "Labour Law" },
+  { "id": "land-law", "name_bn": "ভূমি আইন", "name_en": "Land Law" }
+]

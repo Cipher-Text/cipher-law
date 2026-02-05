@@ -1,0 +1,18 @@
+---
+import { getCollection } from "astro:content";
+import ChamberLayout from "../../../layouts/ChamberLayout.astro";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("bn_chambers");
+  return entries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry }
+  }));
+}
+
+const { entry } = Astro.props as { entry: any };
+const { Content } = await entry.render();
+---
+<ChamberLayout lang="bn" entry={entry} body={entry.body}>
+  <Content />
+</ChamberLayout>

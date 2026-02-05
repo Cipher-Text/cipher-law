@@ -1,0 +1,27 @@
+---
+import type { Lang } from "../i18n/strings";
+import { t } from "../i18n/strings";
+
+interface Props {
+  lang: Lang;
+  verification?: {
+    barCouncilVerified?: boolean;
+    lastCheckedAt?: string;
+  };
+}
+
+const { lang, verification } = Astro.props as Props;
+const show = Boolean(verification?.barCouncilVerified);
+const dateLabel = verification?.lastCheckedAt
+  ? new Date(verification.lastCheckedAt).toLocaleDateString(
+      lang === "bn" ? "bn-BD" : "en-US",
+      { year: "numeric", month: "short", day: "numeric" }
+    )
+  : null;
+---
+{show && (
+  <span class="badge">
+    {t(lang, "verified")}
+    {dateLabel && <span class="muted">{t(lang, "lastChecked")}: {dateLabel}</span>}
+  </span>
+)}

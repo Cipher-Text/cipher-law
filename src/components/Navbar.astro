@@ -1,0 +1,99 @@
+---
+interface Logo {
+  icon?: string;
+  main?: string;
+  sub?: string;
+}
+
+interface Props {
+  logo?: Logo;
+  brandName?: string;
+  navLinks?: string[];
+  ctaLabel?: string;
+  ctaHref?: string;
+  lang?: "bn" | "en";
+}
+
+const {
+  logo,
+  brandName = "Cipher Law",
+  navLinks = [],
+  ctaLabel,
+  ctaHref = "#contact",
+  lang = "en"
+} = Astro.props;
+
+const defaultLinks = lang === "bn"
+  ? ["প্রতিষ্ঠান", "সেবাসমূহ", "যোগাযোগ"]
+  : ["ABOUT", "SERVICES", "CONTACT"];
+
+const links = navLinks.length > 0 ? navLinks : defaultLinks;
+
+const linkHrefs: Record<string, string> = {
+  // Profile page links
+  "ABOUT": "#about",
+  "প্রতিষ্ঠান": "#about",
+  "FIRM": "#about",
+  "ফার্ম": "#about",
+  "SERVICES": "#services",
+  "সেবাসমূহ": "#services",
+  "PRACTICE AREAS": "#services",
+  "অনুশীলন ক্ষেত্র": "#services",
+  "TEAM": "#team",
+  "OUR TEAM": "#team",
+  "আমাদের দল": "#team",
+  "PARTNERS": "#partners",
+  "অংশীদার": "#partners",
+  "CONTACT": "#contact",
+  "যোগাযোগ": "#contact",
+  // Home page links
+  "ADVOCATES": "#advocates",
+  "এডভোকেট": "#advocates",
+  "CHAMBERS": "#chambers",
+  "চেম্বার": "#chambers",
+  "FIRMS": "#firms",
+  "ফার্ম": "#firms"
+};
+---
+
+<nav class="navbar" id="navbar">
+  <div class="logo-container">
+    {logo ? (
+      <>
+        {logo.icon && <div class="logo-icon">{logo.icon}</div>}
+        <div class="logo-text">
+          {logo.main && <div class="logo-main">{logo.main}</div>}
+          {logo.sub && <div class="logo-sub">{logo.sub}</div>}
+        </div>
+      </>
+    ) : (
+      <div class="logo-text">
+        <div class="logo-main" style="color: var(--accent);">⚖️ {brandName}</div>
+      </div>
+    )}
+  </div>
+
+  <ul class="nav-menu">
+    {links.map((link) => (
+      <li><a href={linkHrefs[link] || "#"}>{link}</a></li>
+    ))}
+    {ctaLabel && (
+      <li>
+        <a href={ctaHref} class="nav-btn">{ctaLabel}</a>
+      </li>
+    )}
+  </ul>
+</nav>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  if (navbar) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+  }
+</script>

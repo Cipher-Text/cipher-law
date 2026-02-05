@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advocate Portfolio - Legal Excellence</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            background: #0a0a0a;
+            color: #fff;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(10,10,10,0.95), rgba(20,30,48,0.95)), 
+                        url('data:image/svg+xml,<svg width="1920" height="1080" xmlns="http://www.w3.org/2000/svg"><rect fill="%23141e30" width="1920" height="1080"/><g fill="%23c5a367" opacity="0.05"><circle cx="200" cy="200" r="100"/><circle cx="1600" cy="800" r="150"/><circle cx="800" cy="500" r="80"/></g></svg>');
+            background-size: cover;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(197,163,103,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            max-width: 1200px;
+            padding: 40px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(197,163,103,0.2);
+            border: 2px solid #c5a367;
+            padding: 8px 24px;
+            border-radius: 30px;
+            font-size: 13px;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(197,163,103,0.3); }
+            50% { box-shadow: 0 0 40px rgba(197,163,103,0.6); }
+        }
+
+        .hero h1 {
+            font-size: 72px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff 0%, #c5a367 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 28px;
+            color: #c5a367;
+            margin-bottom: 20px;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .hero-description {
+            font-size: 18px;
+            color: rgba(255,255,255,0.8);
+            max-width: 800px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            font-size: 16px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #c5a367 0%, #d4af37 100%);
+            color: #0a0a0a;
+            box-shadow: 0 10px 30px rgba(197,163,103,0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(197,163,103,0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #c5a367;
+            border: 2px solid #c5a367;
+        }
+
+        .btn-secondary:hover {
+            background: #c5a367;
+            color: #0a0a0a;
+            transform: translateY(-3px);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        .scroll-indicator::before {
+            content: '↓';
+            font-size: 30px;
+            color: #c5a367;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(180deg, #0a0a0a 0%, #141e30 100%);
+            padding: 100px 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 20px;
+            border: 1px solid rgba(197,163,103,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            background: rgba(197,163,103,0.1);
+            border-color: #c5a367;
+        }
+
+        .stat-number {
+            font-size: 56px;
+            font-weight: 800;
+            color: #c5a367;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 18px;
+            color: rgba(255,255,255,0.7);
+            letter-spacing: 1px;
+        }
+
+        /* Services Section */
+        .services-section {
+            padding: 100px 20px;
+            background: #0a0a0a;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-tag {
+            color: #c5a367;
+            font-size: 14px;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .section-description {
+            font-size: 18px;
+            color: rgba(255,255,255,0.7);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: linear-gradient(135deg, rgba(20,30,48,0.6) 0%, rgba(10,10,10,0.8) 100%);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(197,163,103,0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(197,163,103,0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .service-card:hover::before {
+            left: 100%;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: #c5a367;
+            box-shadow: 0 20px 60px rgba(197,163,103,0.2);
+        }
+
+        .service-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .service-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #c5a367;
+        }
+
+        .service-description {
+            font-size: 15px;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* Expertise Section */
+        .expertise-section {
+            padding: 100px 20px;
+            background: linear-gradient(180deg, #141e30 0%, #0a0a0a 100%);
+        }
+
+        .expertise-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .expertise-visual {
+            position: relative;
+            height: 500px;
+            background: linear-gradient(135deg, rgba(197,163,103,0.1) 0%, rgba(197,163,103,0.05) 100%);
+            border-radius: 20px;
+            border: 2px solid rgba(197,163,103,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 120px;
+            overflow: hidden;
+        }
+
+        .expertise-visual::before {
+            content: '⚖️';
+            animation: rotate 20s linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .expertise-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .expertise-item {
+            background: rgba(255,255,255,0.03);
+            padding: 20px 25px;
+            border-radius: 10px;
+            border-left: 4px solid #c5a367;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .expertise-item:hover {
+            background: rgba(197,163,103,0.1);
+            transform: translateX(10px);
+        }
+
+        .expertise-item-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #c5a367;
+            margin-bottom: 5px;
+        }
+
+        .expertise-item-desc {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* Credentials Section */
+        .credentials-section {
+            padding: 100px 20px;
+            background: #0a0a0a;
+        }
+
+        .credentials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .credential-card {
+            background: linear-gradient(135deg, #141e30 0%, #0f1923 100%);
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid #c5a367;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .credential-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 60px rgba(197,163,103,0.3);
+        }
+
+        .credential-badge {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #c5a367 0%, #d4af37 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 36px;
+        }
+
+        .credential-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #c5a367;
+        }
+
+        .credential-detail {
+            font-size: 15px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 100px 20px;
+            background: linear-gradient(135deg, #141e30 0%, #0a0a0a 100%);
+        }
+
+        .contact-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.03);
+            padding: 60px;
+            border-radius: 20px;
+            border: 1px solid rgba(197,163,103,0.2);
+            text-align: center;
+        }
+
+        .contact-title {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .contact-subtitle {
+            font-size: 18px;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 40px;
+        }
+
+        .contact-info {
+            display: grid;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .contact-item {
+            background: rgba(197,163,103,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 16px;
+            border: 1px solid rgba(197,163,103,0.2);
+        }
+
+        .contact-item strong {
+            color: #c5a367;
+            margin-right: 10px;
+        }
+
+        /* Footer */
+        .footer {
+            background: #0a0a0a;
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid rgba(197,163,103,0.2);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-motto {
+            font-size: 20px;
+            color: #c5a367;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .footer-text {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 42px; }
+            .hero-subtitle { font-size: 20px; }
+            .expertise-content { grid-template-columns: 1fr; }
+            .expertise-visual { height: 300px; }
+            .contact-content { padding: 30px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">SUPREME COURT ADVOCATE</div>
+            <h1>ADVOCATE<br>MD. [YOUR NAME]</h1>
+            <p class="hero-subtitle">Legal Excellence | Justice Delivered</p>
+            <p class="hero-description">
+                Providing comprehensive legal solutions with 15+ years of experience in Supreme Court litigation, 
+                corporate law, and international legal matters. Your trusted partner for justice in Bangladesh and beyond.
+            </p>
+            <div class="cta-buttons">
+                <a href="#contact" class="btn btn-primary">Schedule Consultation</a>
+                <a href="#services" class="btn btn-secondary">Explore Services</a>
+            </div>
+        </div>
+        <div class="scroll-indicator"></div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Cases Won</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">15+</div>
+                <div class="stat-label">Years Experience</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">Success Rate</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">200+</div>
+                <div class="stat-label">Corporate Clients</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services-section">
+        <div class="section-header">
+            <div class="section-tag">WHAT I OFFER</div>
+            <h2 class="section-title">Legal Services</h2>
+            <p class="section-description">
+                Comprehensive legal solutions tailored to your needs, backed by expertise and proven results
+            </p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🏛️</div>
+                <h3 class="service-title">Supreme Court Litigation</h3>
+                <p class="service-description">
+                    Expert representation in Appellate and High Court Division for civil, criminal, constitutional, and writ matters with proven track record.
+                </p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🏢</div>
+                <h3 class="service-title">Corporate & Commercial Law</h3>
+                <p class="service-description">
+                    Complete corporate legal support including company formation, compliance, contracts, M&A, and dispute resolution for businesses.
+                </p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🌍</div>
+                <h3 class="service-title">International Trade Law</h3>
+                <p class="service-description">
+                    Cross-border legal advisory for import-export, trade agreements, international contracts, and dispute arbitration.
+                </p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🏠</div>
+                <h3 class="service-title">Property & Real Estate</h3>
+                <p class="service-description">
+                    Land registration, property disputes, title verification, inheritance matters, and real estate transactions.
+                </p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">💼</div>
+                <h3 class="service-title">Banking & Finance</h3>
+                <p class="service-description">
+                    Legal services for financial institutions, loan recovery, debt restructuring, and banking regulatory compliance.
+                </p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">⚡</div>
+                <h3 class="service-title">Intellectual Property</h3>
+                <p class="service-description">
+                    Protection of trademarks, patents, copyrights, trade secrets, and IP litigation for innovators and businesses.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Expertise Section -->
+    <section class="expertise-section">
+        <div class="section-header">
+            <div class="section-tag">SPECIALIZED PRACTICE AREAS</div>
+            <h2 class="section-title">Areas of Expertise</h2>
+        </div>
+        <div class="expertise-content">
+            <div class="expertise-visual"></div>
+            <div class="expertise-list">
+                <div class="expertise-item">
+                    <div class="expertise-item-title">Constitutional Law</div>
+                    <div class="expertise-item-desc">Writ petitions, fundamental rights, judicial review</div>
+                </div>
+                <div class="expertise-item">
+                    <div class="expertise-item-title">Criminal Defense</div>
+                    <div class="expertise-item-desc">Trial, appeals, bail, anticipatory bail applications</div>
+                </div>
+                <div class="expertise-item">
+                    <div class="expertise-item-title">Civil Litigation</div>
+                    <div class="expertise-item-desc">Contract disputes, property suits, recovery matters</div>
+                </div>
+                <div class="expertise-item">
+                    <div class="expertise-item-title">Family Law</div>
+                    <div class="expertise-item-desc">Divorce, custody, maintenance, inheritance disputes</div>
+                </div>
+                <div class="expertise-item">
+                    <div class="expertise-item-title">Tax & Revenue</div>
+                    <div class="expertise-item-desc">VAT, income tax, customs disputes and appeals</div>
+                </div>
+                <div class="expertise-item">
+                    <div class="expertise-item-title">Labor & Employment</div>
+                    <div class="expertise-item-desc">Employment contracts, industrial disputes, labor rights</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Credentials Section -->
+    <section class="credentials-section">
+        <div class="section-header">
+            <div class="section-tag">QUALIFICATIONS & RECOGNITION</div>
+            <h2 class="section-title">Professional Credentials</h2>
+        </div>
+        <div class="credentials-grid">
+            <div class="credential-card">
+                <div class="credential-badge">🎓</div>
+                <h3 class="credential-title">LL.M (Master of Laws)</h3>
+                <p class="credential-detail">University of Dhaka<br>Specialization: International Law</p>
+            </div>
+            <div class="credential-card">
+                <div class="credential-badge">⚖️</div>
+                <h3 class="credential-title">Supreme Court Enrollment</h3>
+                <p class="credential-detail">Bangladesh Supreme Court<br>Roll No: XXXX | Year: 20XX</p>
+            </div>
+            <div class="credential-card">
+                <div class="credential-badge">📜</div>
+                <h3 class="credential-title">Bar Council Licensed</h3>
+                <p class="credential-detail">Bangladesh Bar Council<br>Enrollment No: XXXX</p>
+            </div>
+            <div class="credential-card">
+                <div class="credential-badge">🌐</div>
+                <h3 class="credential-title">IBA Member</h3>
+                <p class="credential-detail">International Bar Association<br>Global Legal Network</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="contact-content">
+            <h2 class="contact-title">Let's Discuss Your Case</h2>
+            <p class="contact-subtitle">
+                Schedule a confidential consultation to explore your legal options
+            </p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <strong>📞 Phone:</strong> +880 1XXX-XXXXXX
+                </div>
+                <div class="contact-item">
+                    <strong>📧 Email:</strong> advocate@lawfirm.com
+                </div>
+                <div class="contact-item">
+                    <strong>📍 Chamber:</strong> Supreme Court Bar Association, Dhaka, Bangladesh
+                </div>
+                <div class="contact-item">
+                    <strong>⏰ Hours:</strong> Sunday - Thursday: 9:00 AM - 6:00 PM
+                </div>
+            </div>
+            <a href="tel:+8801XXXXXXXXX" class="btn btn-primary">Call Now for Consultation</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="footer-motto">"Justice Delayed is Justice Denied"</p>
+            <p class="footer-text">
+                © 2026 Advocate MD. [Your Name] | Supreme Court of Bangladesh | All Rights Reserved<br>
+                Confidential Legal Services | Professional Ethics Maintained
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

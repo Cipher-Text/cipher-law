@@ -1,0 +1,88 @@
+---
+interface Contact {
+  phone?: string;
+  mobile?: string;
+  email?: string;
+  hours?: string;
+  emergencyPhone?: string;
+}
+
+interface Location {
+  address?: string;
+  city?: string;
+  mapUrl?: string;
+}
+
+interface Props {
+  contact?: Contact;
+  location?: Location;
+  heading?: string;
+  subheading?: string;
+  showMap?: boolean;
+}
+
+const { contact, location, heading = "Contact Us", subheading, showMap = true } = Astro.props;
+---
+
+<div class="contact-container">
+  <div class="contact-info">
+    <h2>{heading}</h2>
+    {subheading && <p>{subheading}</p>}
+
+    <div class="contact-details">
+      {location?.address && (
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div class="contact-text">
+            <h4>Address</h4>
+            <p set:html={location.address.replace(/\n/g, '<br>')} />
+          </div>
+        </div>
+      )}
+
+      {(contact?.phone || contact?.mobile) && (
+        <div class="contact-item">
+          <div class="contact-icon">📞</div>
+          <div class="contact-text">
+            <h4>Phone</h4>
+            <p>
+              {contact.phone && <span>Tel: {contact.phone}<br /></span>}
+              {contact.mobile && <span>Mobile: {contact.mobile}<br /></span>}
+              {contact.emergencyPhone && <span>Emergency: {contact.emergencyPhone}</span>}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {contact?.email && (
+        <div class="contact-item">
+          <div class="contact-icon">✉️</div>
+          <div class="contact-text">
+            <h4>Email</h4>
+            <p><a href={`mailto:${contact.email}`}>{contact.email}</a></p>
+          </div>
+        </div>
+      )}
+
+      {contact?.hours && (
+        <div class="contact-item">
+          <div class="contact-icon">⏰</div>
+          <div class="contact-text">
+            <h4>Hours</h4>
+            <p set:html={contact.hours.replace(/\n/g, '<br>')} />
+          </div>
+        </div>
+      )}
+    </div>
+  </div>
+
+  {showMap && (
+    <div class="contact-map">
+      {location?.mapUrl ? (
+        <a href={location.mapUrl} target="_blank" rel="noopener">🗺️</a>
+      ) : (
+        <span>🗺️</span>
+      )}
+    </div>
+  )}
+</div>

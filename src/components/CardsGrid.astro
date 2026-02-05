@@ -1,0 +1,220 @@
+---
+import type { Lang } from "../i18n/strings";
+
+interface CardEntry {
+  title: string;
+  href: string;
+  type: "advocate" | "chamber" | "firm";
+  district?: string;
+  practiceAreas?: string[];
+  verification?: {
+    tier?: number;
+    barCouncilVerified?: boolean;
+    lastCheckedAt?: string;
+  };
+}
+
+interface Props {
+  lang: Lang;
+  entries: CardEntry[];
+}
+
+const { lang, entries } = Astro.props;
+
+const typeLabels = {
+  advocate: { en: "Advocate", bn: "এডভোকেট" },
+  chamber: { en: "Chamber", bn: "চেম্বার" },
+  firm: { en: "Law Firm", bn: "ল' ফার্ম" }
+};
+
+const typeIcons = {
+  advocate: "👨‍⚖️",
+  chamber: "🏛️",
+  firm: "🏢"
+};
+---
+
+<div class="directory-grid">
+  {entries.map((entry) => (
+    <a
+      class="directory-card"
+      href={entry.href}
+      data-card
+      data-search={`${entry.title} ${entry.district ?? ""} ${(entry.practiceAreas ?? []).join(" ")}`.toLowerCase()}
+    >
+      <div class="card-header">
+        <span class="card-type-icon">{typeIcons[entry.type]}</span>
+        <span class="card-type-label">{typeLabels[entry.type][lang]}</span>
+        {entry.verification?.barCouncilVerified && (
+          <span class="verified-badge">
+            <span class="verified-icon">✓</span>
+            {lang === "bn" ? "যাচাইকৃত" : "Verified"}
+          </span>
+        )}
+      </div>
+
+      <h3 class="card-title">{entry.title}</h3>
+
+      {entry.district && (
+        <p class="card-location">
+          <span class="location-icon">📍</span>
+          {entry.district}
+        </p>
+      )}
+
+      {entry.practiceAreas && entry.practiceAreas.length > 0 && (
+        <div class="card-tags">
+          {entry.practiceAreas.slice(0, 3).map((area) => (
+            <span class="practice-tag">{area}</span>
+          ))}
+        </div>
+      )}
+
+      <div class="card-footer">
+        <span class="view-profile">
+          {lang === "bn" ? "প্রোফাইল দেখুন" : "View Profile"} →
+        </span>
+      </div>
+    </a>
+  ))}
+</div>
+
+<style>
+  .directory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .directory-card {
+    background: linear-gradient(135deg, rgba(20, 30, 48, 0.6), rgba(10, 10, 10, 0.8));
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .directory-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-light));
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+  }
+
+  .directory-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--accent);
+    box-shadow: 0 20px 50px rgba(197, 163, 103, 0.2);
+  }
+
+  .directory-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card-type-icon {
+    font-size: 20px;
+  }
+
+  .card-type-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .verified-badge {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(197, 163, 103, 0.2);
+    color: var(--accent);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .verified-icon {
+    font-size: 10px;
+  }
+
+  .card-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .directory-card:hover .card-title {
+    color: var(--accent);
+  }
+
+  .card-location {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .location-icon {
+    font-size: 12px;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .practice-tag {
+    background: rgba(197, 163, 103, 0.1);
+    color: var(--accent);
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 11px;
+    font-weight: 600;
+    border: 1px solid rgba(197, 163, 103, 0.2);
+  }
+
+  .card-footer {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .view-profile {
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .directory-card:hover .view-profile {
+    letter-spacing: 1px;
+  }
+</style>

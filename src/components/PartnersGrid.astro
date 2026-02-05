@@ -1,0 +1,42 @@
+---
+interface Partner {
+  name: string;
+  title?: string;
+  credentials?: string;
+  expertise?: string[];
+  photo?: string;
+}
+
+interface Props {
+  partners: Partner[];
+}
+
+const { partners } = Astro.props;
+
+const getPhotoEmoji = (partner: Partner, index: number): string => {
+  if (partner.photo) return partner.photo;
+  return index % 2 === 0 ? "👨‍⚖️" : "👩‍⚖️";
+};
+---
+
+{partners.length > 0 && (
+  <div class="team-grid">
+    {partners.map((partner, i) => (
+      <div class="team-card">
+        <div class="team-photo">{getPhotoEmoji(partner, i)}</div>
+        <div class="team-info">
+          <h3 class="team-name">{partner.name}</h3>
+          {partner.title && <p class="team-role">{partner.title}</p>}
+          {partner.credentials && <p class="team-credentials">{partner.credentials}</p>}
+          {partner.expertise && partner.expertise.length > 0 && (
+            <div class="team-tags">
+              {partner.expertise.map((exp) => (
+                <span class="tag">{exp}</span>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    ))}
+  </div>
+)}

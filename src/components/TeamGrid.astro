@@ -1,0 +1,46 @@
+---
+interface TeamMember {
+  name: string;
+  role?: string;
+  credentials?: string;
+  specialties?: string[];
+  photo?: string;
+}
+
+interface Props {
+  team: TeamMember[];
+}
+
+const { team } = Astro.props;
+
+const getPhotoEmoji = (member: TeamMember): string => {
+  if (member.photo) return member.photo;
+  const role = member.role?.toLowerCase() || "";
+  if (role.includes("partner") || role.includes("senior")) {
+    return member.name.toLowerCase().includes("a") ? "👩‍⚖️" : "👨‍⚖️";
+  }
+  return "👨‍⚖️";
+};
+---
+
+{team.length > 0 && (
+  <div class="team-grid">
+    {team.map((member) => (
+      <div class="team-card">
+        <div class="team-photo">{getPhotoEmoji(member)}</div>
+        <div class="team-info">
+          <h3 class="team-name">{member.name}</h3>
+          {member.role && <p class="team-role">{member.role}</p>}
+          {member.credentials && <p class="team-credentials">{member.credentials}</p>}
+          {member.specialties && member.specialties.length > 0 && (
+            <div class="team-tags">
+              {member.specialties.map((spec) => (
+                <span class="tag">{spec}</span>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    ))}
+  </div>
+)}

@@ -1,0 +1,185 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Navbar from "../components/Navbar.astro";
+import Hero from "../components/Hero.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import AboutSection from "../components/AboutSection.astro";
+import PracticeGrid from "../components/PracticeGrid.astro";
+import TeamGrid from "../components/TeamGrid.astro";
+import WhyChooseUs from "../components/WhyChooseUs.astro";
+import ContactSection from "../components/ContactSection.astro";
+import PremiumFooter from "../components/PremiumFooter.astro";
+import type { Lang } from "../i18n/strings";
+import { t } from "../i18n/strings";
+
+interface Props {
+  lang: Lang;
+  entry: any;
+  body: string;
+}
+
+const { lang, entry, body } = Astro.props;
+const data = entry.data;
+
+// Extract hero data
+const hero = data.hero || {};
+const badge = hero.badge || `ESTABLISHED ${data.organization?.foundedYear || "2010"} | DHAKA, BANGLADESH`;
+const tagline = hero.tagline || "Your Trusted Partner in Justice";
+const description = hero.description || body.split(/\n\s*\n/)[0]?.replace(/^#+\s*/g, "").trim();
+
+// Practice Areas
+const practiceAreas = data.practiceAreas?.length > 0 ? data.practiceAreas : [];
+
+// Team
+const team = data.team?.length > 0 ? data.team : [];
+
+// Why Choose Us
+const whyChooseUs = data.whyChooseUs?.length > 0 ? data.whyChooseUs : [];
+
+// About
+const about = data.about || {};
+
+// Mini stats
+const miniStats = data.miniStats || {
+  casesWon: 800,
+  years: 15,
+  successRate: 97
+};
+
+// SEO
+const seoTitle = data.seo?.title ?? data.title;
+const seoDescription = data.seo?.description ?? description;
+
+// Show toggles
+const show = data.show || {};
+---
+
+<BaseLayout
+  lang={lang}
+  title={seoTitle}
+  description={seoDescription}
+  canonical={data.seo?.canonical}
+  type="chamber"
+  slug={entry.slug}
+  entity={data}
+>
+  <!-- Navigation -->
+  <Navbar
+    brandName={data.title}
+    navLinks={data.navLinks?.length > 0 ? data.navLinks : ["ABOUT", "SERVICES", "OUR TEAM", "CONTACT"]}
+    ctaLabel={lang === "bn" ? "পরামর্শ নিন" : "BOOK CONSULTATION"}
+    lang={lang}
+  />
+
+  <!-- Hero Section -->
+  <section class="hero" style="margin-top: 80px;">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        {badge}
+      </div>
+      <h1 class="gradient-text" set:html={data.title.replace(/\n/g, '<br>')} />
+      {tagline && <p class="hero-tagline" style="font-size: 24px; color: var(--accent); font-style: italic; letter-spacing: 3px;">{tagline}</p>}
+      {description && <p class="hero-description">{description}</p>}
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-primary">
+          {lang === "bn" ? "পরামর্শ বুক করুন" : "BOOK CONSULTATION"}
+        </a>
+        <a href="#services" class="btn btn-outline">
+          {lang === "bn" ? "আমাদের সেবা" : "OUR SERVICES"}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="section section-gradient" id="about">
+    <AboutSection
+      about={about}
+      miniStats={miniStats}
+      showVisual={true}
+    />
+  </section>
+
+  <!-- Practice Areas -->
+  {show.services !== false && practiceAreas.length > 0 && (
+    <section class="section section-dark" id="services">
+      <SectionHeader
+        tag={lang === "bn" ? "ব্যাপক আইনি সেবা" : "COMPREHENSIVE LEGAL SERVICES"}
+        title={lang === "bn" ? "আইনি অনুশীলন ক্ষেত্র" : "Practice Areas"}
+        description={lang === "bn" ? "সুপ্রিম কোর্ট মামলা থেকে কর্পোরেট উপদেষ্টা পর্যন্ত সম্পূর্ণ আইনি সেবা" : "Full-spectrum legal services from Supreme Court litigation to corporate advisory"}
+      />
+      <PracticeGrid practiceAreas={practiceAreas} />
+    </section>
+  )}
+
+  <!-- Team Section -->
+  {show.team !== false && team.length > 0 && (
+    <section class="section section-gradient" id="team">
+      <SectionHeader
+        tag={lang === "bn" ? "আমাদের আইনি বিশেষজ্ঞদের সাথে পরিচিত হন" : "MEET OUR LEGAL EXPERTS"}
+        title={lang === "bn" ? "আমাদের দল" : "Our Team"}
+        description={lang === "bn" ? "আপনার আইনি সাফল্যে প্রতিশ্রুতিবদ্ধ অভিজ্ঞ আইনজীবীগণ" : "Experienced advocates committed to your legal success"}
+      />
+      <TeamGrid team={team} />
+    </section>
+  )}
+
+  <!-- Why Choose Us -->
+  {show.whyChooseUs !== false && whyChooseUs.length > 0 && (
+    <section class="section section-dark">
+      <SectionHeader
+        tag={lang === "bn" ? "আমাদের প্রতিযোগিতামূলক সুবিধা" : "OUR COMPETITIVE ADVANTAGE"}
+        title={lang === "bn" ? "কেন আমাদের চেম্বার বেছে নেবেন" : "Why Choose Our Chamber"}
+      />
+      <WhyChooseUs items={whyChooseUs} />
+    </section>
+  )}
+
+  <!-- Contact Section -->
+  {show.quickContact !== false && (
+    <section class="section section-gradient" id="contact">
+      <SectionHeader
+        tag={lang === "bn" ? "যোগাযোগ করুন" : "GET IN TOUCH"}
+        title={lang === "bn" ? "আমাদের চেম্বারে আসুন" : "Visit Our Chamber"}
+        description={lang === "bn" ? "আমাদের আইনি বিশেষজ্ঞদের সাথে গোপনীয় পরামর্শের সময় নির্ধারণ করুন" : "Schedule a confidential consultation with our legal experts"}
+      />
+      <ContactSection
+        contact={data.contact}
+        location={data.location}
+        heading={lang === "bn" ? "যোগাযোগের তথ্য" : "Contact Information"}
+        showMap={true}
+      />
+    </section>
+  )}
+
+  <!-- Body Content (if any) -->
+  {body.trim() && (
+    <section class="section section-dark">
+      <div style="max-width: 800px; margin: 0 auto;">
+        <slot />
+      </div>
+    </section>
+  )}
+
+  <!-- Footer -->
+  <PremiumFooter
+    brandName={data.title}
+    brandDescription={about.paragraphs?.[0]}
+    brandCredential="Supreme Court Bar Association | Bangladesh Bar Council Registered"
+    footerLinks={data.footerLinks}
+    motto={data.motto || "Justice Delayed is Justice Denied - We Ensure Swift & Fair Legal Solutions"}
+    lang={lang}
+  />
+</BaseLayout>
+
+<style>
+  .hero-tagline {
+    font-size: 24px;
+    color: var(--accent);
+    margin-bottom: 20px;
+    font-weight: 300;
+    letter-spacing: 3px;
+    font-style: italic;
+  }
+</style>

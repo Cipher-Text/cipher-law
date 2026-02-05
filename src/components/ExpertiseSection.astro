@@ -1,0 +1,55 @@
+---
+interface ExpertiseItem {
+  title: string;
+  description?: string;
+}
+
+interface Props {
+  expertise: ExpertiseItem[];
+  showVisual?: boolean;
+}
+
+const { expertise, showVisual = true } = Astro.props;
+---
+
+{expertise.length > 0 && (
+  <div class="expertise-content">
+    {showVisual && (
+      <div class="about-visual">
+        <span class="visual-icon">⚖️</span>
+      </div>
+    )}
+    <div class="expertise-list">
+      {expertise.map((item) => (
+        <div class="value-item">
+          <div class="value-text">
+            <h4>{item.title}</h4>
+            {item.description && <p>{item.description}</p>}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+
+<style>
+  .expertise-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .expertise-list {
+    display: grid;
+    gap: 15px;
+  }
+
+  @media (max-width: 768px) {
+    .expertise-content {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

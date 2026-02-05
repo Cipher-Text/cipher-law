@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rahman & Associates Legal - Premier Law Firm Bangladesh</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+            background: #000;
+            color: #fff;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0,0,0,0.98);
+            backdrop-filter: blur(20px);
+            padding: 20px 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(197,163,103,0.15);
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 15px 80px;
+            background: rgba(0,0,0,1);
+            box-shadow: 0 5px 30px rgba(197,163,103,0.1);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #c5a367, #d4af37);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 900;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-main {
+            font-size: 22px;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-sub {
+            font-size: 11px;
+            color: #c5a367;
+            letter-spacing: 3px;
+            font-weight: 600;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: color 0.3s;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .nav-menu a:hover {
+            color: #c5a367;
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, #c5a367, #d4af37);
+            color: #000;
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(197,163,103,0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: radial-gradient(ellipse at top, rgba(197,163,103,0.15), transparent 70%),
+                        linear-gradient(180deg, #000 0%, #0a0a0a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            margin-top: 90px;
+        }
+
+        .hero-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(197,163,103,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(197,163,103,0.03) 1px, transparent 1px);
+            background-size: 100px 100px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100px, 100px); }
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            max-width: 1100px;
+            padding: 60px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(197,163,103,0.1);
+            border: 1px solid rgba(197,163,103,0.3);
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-size: 11px;
+            letter-spacing: 3px;
+            margin-bottom: 35px;
+            font-weight: 700;
+        }
+
+        .badge-dot {
+            width: 8px;
+            height: 8px;
+            background: #c5a367;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .hero h1 {
+            font-size: 82px;
+            font-weight: 900;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #fff 30%, #c5a367 70%, #d4af37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+            letter-spacing: -2px;
+        }
+
+        .hero-subtitle {
+            font-size: 26px;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 20px;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .hero-description {
+            font-size: 17px;
+            color: rgba(255,255,255,0.6);
+            max-width: 800px;
+            margin: 0 auto 50px;
+            line-height: 1.8;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 18px 45px;
+            font-size: 14px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-block;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #c5a367, #d4af37);
+            color: #000;
+            box-shadow: 0 10px 40px rgba(197,163,103,0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(197,163,103,0.5);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #c5a367;
+            border: 2px solid #c5a367;
+        }
+
+        .btn-outline:hover {
+            background: rgba(197,163,103,0.1);
+            transform: translateY(-5px);
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: linear-gradient(135deg, rgba(197,163,103,0.05), rgba(0,0,0,0.8));
+            padding: 50px 80px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            border-top: 1px solid rgba(197,163,103,0.2);
+            border-bottom: 1px solid rgba(197,163,103,0.2);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .stat-number {
+            font-size: 52px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #c5a367, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: rgba(255,255,255,0.6);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 140px 80px;
+            background: #000;
+        }
+
+        .about-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 100px;
+            align-items: center;
+        }
+
+        .about-content h2 {
+            font-size: 56px;
+            font-weight: 900;
+            margin-bottom: 25px;
+            line-height: 1.2;
+        }
+
+        .about-content p {
+            font-size: 17px;
+            line-height: 1.9;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 25px;
+        }
+
+        .firm-values {
+            display: grid;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .value-item {
+            display: flex;
+            gap: 20px;
+            padding: 25px;
+            background: rgba(197,163,103,0.03);
+            border-left: 3px solid #c5a367;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .value-item:hover {
+            background: rgba(197,163,103,0.08);
+            transform: translateX(10px);
+        }
+
+        .value-icon {
+            font-size: 32px;
+            flex-shrink: 0;
+        }
+
+        .value-text h4 {
+            font-size: 18px;
+            color: #c5a367;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .value-text p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            margin: 0;
+        }
+
+        .about-visual {
+            height: 600px;
+            background: linear-gradient(135deg, rgba(197,163,103,0.08), transparent);
+            border-radius: 20px;
+            border: 1px solid rgba(197,163,103,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-visual::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(197,163,103,0.2), transparent 70%);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -30px) scale(1.1); }
+        }
+
+        .visual-logo {
+            font-size: 120px;
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        /* Practice Groups */
+        .practice-section {
+            padding: 140px 80px;
+            background: linear-gradient(180deg, #000, #0a0a0a);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-tag {
+            color: #c5a367;
+            font-size: 12px;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            font-size: 56px;
+            font-weight: 900;
+            margin-bottom: 25px;
+            line-height: 1.2;
+        }
+
+        .section-description {
+            font-size: 18px;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.8;
+        }
+
+        .practice-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .practice-card {
+            background: linear-gradient(135deg, rgba(197,163,103,0.03), rgba(0,0,0,0.5));
+            padding: 50px;
+            border-radius: 20px;
+            border: 1px solid rgba(197,163,103,0.15);
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .practice-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #c5a367, #d4af37);
+            transform: scaleX(0);
+            transition: transform 0.5s ease;
+        }
+
+        .practice-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .practice-card:hover {
+            transform: translateY(-10px);
+            border-color: #c5a367;
+            background: linear-gradient(135deg, rgba(197,163,103,0.08), rgba(0,0,0,0.8));
+            box-shadow: 0 20px 60px rgba(197,163,103,0.2);
+        }
+
+        .practice-icon {
+            font-size: 48px;
+            margin-bottom: 25px;
+            display: block;
+        }
+
+        .practice-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .practice-desc {
+            font-size: 15px;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 25px;
+        }
+
+        .practice-services {
+            list-style: none;
+            padding: 0;
+        }
+
+        .practice-services li {
+            padding: 10px 0;
+            color: rgba(255,255,255,0.5);
+            font-size: 14px;
+            position: relative;
+            padding-left: 20px;
+            transition: color 0.3s;
+        }
+
+        .practice-services li:hover {
+            color: #c5a367;
+        }
+
+        .practice-services li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #c5a367;
+        }
+
+        /* Partners Section */
+        .partners-section {
+            padding: 140px 80px;
+            background: #000;
+        }
+
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .partner-card {
+            background: linear-gradient(135deg, rgba(197,163,103,0.05), rgba(0,0,0,0.8));
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(197,163,103,0.2);
+            transition: all 0.4s ease;
+        }
+
+        .partner-card:hover {
+            transform: translateY(-10px);
+            border-color: #c5a367;
+            box-shadow: 0 20px 60px rgba(197,163,103,0.3);
+        }
+
+        .partner-photo {
+            height: 350px;
+            background: linear-gradient(135deg, rgba(197,163,103,0.2), rgba(20,30,48,0.5));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100px;
+            border-bottom: 2px solid #c5a367;
+        }
+
+        .partner-info {
+            padding: 35px;
+        }
+
+        .partner-name {
+            font-size: 26px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .partner-title {
+            font-size: 13px;
+            color: #c5a367;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .partner-credentials {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .partner-expertise {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .expertise-badge {
+            background: rgba(197,163,103,0.15);
+            color: #c5a367;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        /* Why Choose Section */
+        .why-section {
+            padding: 140px 80px;
+            background: linear-gradient(180deg, #0a0a0a, #000);
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .why-card {
+            text-align: center;
+            padding: 50px 35px;
+            background: rgba(197,163,103,0.02);
+            border-radius: 20px;
+            border: 1px solid rgba(197,163,103,0.15);
+            transition: all 0.4s ease;
+        }
+
+        .why-card:hover {
+            background: rgba(197,163,103,0.05);
+            transform: scale(1.05);
+            border-color: #c5a367;
+        }
+
+        .why-icon {
+            font-size: 56px;
+            margin-bottom: 25px;
+        }
+
+        .why-title {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .why-text {
+            font-size: 15px;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.8;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 140px 80px;
+            background: #000;
+        }
+
+        .contact-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(197,163,103,0.05), rgba(0,0,0,0.8));
+            border-radius: 30px;
+            border: 1px solid rgba(197,163,103,0.2);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .contact-info {
+            padding: 70px;
+        }
+
+        .contact-info h2 {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+
+        .contact-info p {
+            font-size: 17px;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 50px;
+            line-height: 1.8;
+        }
+
+        .contact-details {
+            display: grid;
+            gap: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #c5a367, #d4af37);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .contact-text h4 {
+            font-size: 16px;
+            color: #c5a367;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .contact-text p {
+            font-size: 15px;
+            color: rgba(255,255,255,0.7);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .contact-map {
+            background: linear-gradient(135deg, rgba(197,163,103,0.1), transparent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100px;
+        }
+
+        /* Footer */
+        .footer {
+            background: #000;
+            padding: 80px 80px 40px;
+            border-top: 1px solid rgba(197,163,103,0.15);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            max-width: 1400px;
+            margin: 0 auto 60px;
+        }
+
+        .footer-brand h3 {
+            font-size: 28px;
+            font-weight: 900;
+            color: #c5a367;
+            margin-bottom: 20px;
+        }
+
+        .footer-brand p {
+            font-size: 15px;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .footer-links h4 {
+            font-size: 16px;
+            color: #fff;
+            margin-bottom: 25px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #c5a367;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid rgba(197,163,103,0.1);
+        }
+
+        .footer-tagline {
+            font-size: 18px;
+            color: #c5a367;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .footer-copyright {
+            font-size: 13px;
+            color: rgba(255,255,255,0.4);
+        }
+
+        @media (max-width: 1024px) {
+            .navbar { padding: 20px 40px; }
+            .stats-bar { grid-template-columns: repeat(2, 1fr); padding: 40px; }
+            .about-grid, .contact-container { grid-template-columns: 1fr; }
+            .practice-grid, .partners-grid, .why-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 48px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo-container">
+            <div class="logo-icon">R&A</div>
+            <div class="logo-text">
+                <div class="logo-main">RAHMAN & ASSOCIATES</div>
+                <div class="logo-sub">LEGAL</div>
+            </div>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="#about">FIRM</a></li>
+            <li><a href="#practice">PRACTICE AREAS</a></li>
+            <li><a href="#partners">PARTNERS</a></li>
+            <li><a href="#contact">CONTACT</a></li>
+            <button class="nav-btn">CONSULT NOW</button>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-grid"></div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                BANGLADESH'S LEADING LAW FIRM
+            </div>
+            <h1>Legal Excellence<br>Redefined</h1>
+            <p class="hero-subtitle">
+                Strategic legal solutions for corporations, multinationals,<br>and global businesses
+            </p>
+            <p class="hero-description">
+                A full-service law firm delivering sophisticated legal services across Bangladesh and internationally. 
+                We combine local expertise with global standards to serve Fortune 500 companies, NRB investors, 
+                and high-net-worth individuals.
+            </p>
+            <div class="hero-cta">
+                <a href="#contact" class="btn btn-primary">SCHEDULE CONSULTATION</a>
+                <a href="#practice" class="btn btn-outline">EXPLORE SERVICES</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-number">1000+</div>
+            <div class="stat-label">Cases Resolved</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">20+</div>
+            <div class="stat-label">Years Established</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">50+</div>
+            <div class="stat-label">Corporate Clients</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">15+</div>
+            <div class="stat-label">Practice Groups</div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="about-grid">
+            <div class="about-content">
+                <h2>About Rahman & Associates Legal</h2>
+                <p>
+                    Founded in 2005, Rahman & Associates Legal has emerged as Bangladesh's premier full-service 
+                    law firm, serving a diverse portfolio of multinational corporations, financial institutions, 
+                    and high-profile clients across domestic and international jurisdictions.
+                </p>
+                <p>
+                    Our firm operates through specialized practice groups, each led by senior partners with 
+                    deep expertise in their respective fields. We pride ourselves on delivering strategic, 
+                    commercially-minded legal solutions that drive business success.
+                </p>
+                <div class="firm-values">
+                    <div class="value-item">
+                        <div class="value-icon">🎯</div>
+                        <div class="value-text">
+                            <h4>Strategic Approach</h4>
+                            <p>Business-focused legal strategies aligned with client objectives</p>
+                        </div>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon">🌐</div>
+                        <div class="value-text">
+                            <h4>Global Standards</h4>
+                            <p>International best practices with local market expertise</p>
+                        </div>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon">⚡</div>
+                        <div class="value-text">
+                            <h4>Results-Driven</h4>
+                            <p>Proven track record of successful outcomes for clients</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="about-visual">
+                <div class="visual-logo">⚖️</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Practice Groups -->
+    <section id="practice" class="practice-section">
+        <div class="section-header">
+            <div class="section-tag">COMPREHENSIVE LEGAL SERVICES</div>
+            <h2 class="section-title">Practice Groups</h2>
+            <p class="section-description">
+                Specialized teams delivering integrated legal solutions across multiple jurisdictions and industries
+            </p>
+        </div>
+        <div class="practice-grid">
+            <div class="practice-card">
+                <span class="practice-icon">🏢</span>
+                <h3 class="practice-title">Corporate & M&A</h3>
+                <p class="practice-desc">
+                    Comprehensive corporate advisory for businesses at every growth stage
+                </p>
+                <ul class="practice-services">
+                    <li>Mergers & Acquisitions</li>
+                    <li>Corporate Restructuring</li>
+                    <li>Joint Ventures & Partnerships</li>
+                    <li>Corporate Governance</li>
+                    <li>Due Diligence</li>
+                </ul>
+            </div>
+
+            <div class="practice-card">
+                <span class="practice-icon">💼</span>
+                <h3 class="practice-title">Banking & Finance</h3>
+                <p class="practice-desc">
+                    Expert counsel for financial institutions and complex transactions
+                </p>
+                <ul class="practice-services">
+                    <li>Project Finance</li>
+                    <li>Structured Finance</li>
+                    <li>Regulatory Compliance</li>
+                    <li>Capital Markets</li>
+                    <li>Asset Recovery</li>
+                </ul>
+            </div>
+
+            <div class="practice-card">
+                <span class="practice-icon">🌍</span>
+                <h3 class="practice-title">International Trade</h3>
+                <p class="practice-desc">
+                    Cross-border transactions and trade dispute resolution
+                </p>
+                <ul class="practice-services">
+                    <li>Import-Export Advisory</li>
+                    <li>Trade Agreements</li>
+                    <li>Customs & Compliance</li>
+                    <li>International Arbitration</li>
+                    <li>WTO Matters</li>
+                </ul>
+            </div>
+
+            <div class="practice-card">
+                <span class="practice-icon">⚡</span>
+                <h3 class="practice-title">Energy & Infrastructure</h3>
+                <p class="practice-desc">
+                    Legal support for major infrastructure and energy projects
+                </p>
+                <ul class="practice-services">
+                    <li>Power Projects</li>
+                    <li>PPP Transactions</li>
+                    <li>EPC Contracts</li>
+                    <li>Renewable Energy</li>
+                    <li>Regulatory Approvals</li>
+                </ul>
+            </div>
+
+            <div class="practice-card">
+                <span class="practice-icon">🔒</span>
+                <h3 class="practice-title">Intellectual Property</h3>
+                <p class="practice-desc">
+                    Protecting and monetizing intellectual property assets
+                </p>
+                <ul class="practice-services">
+                    <li>Trademark & Patent</li>
+                    <li>Copyright Protection</li>
+                    <li>IP Litigation</li>
+                    <li>Technology Licensing</li>
+                    <li>Brand Management</li>
+                </ul>
+            </div>
+
+            <div class="practice-card">
+                <span class="practice-icon">📊</span>
+                <h3 class="practice-title">Tax & Regulatory</h3>
+                <p class="practice-desc">
+                    Strategic tax planning and regulatory compliance
+                </p>
+                <ul class="practice-services">
+                    <li>Corporate Tax Advisory</li>
+                    <li>VAT & Customs</li>
+                    <li>Transfer Pricing</li>
+                    <li>Tax Litigation</li>
+                    <li>Regulatory Compliance</li>
+                </ul>
+            </div>
+
+            <div class="practice-card">
+                <span class="practice-icon">🏛️</span>
+                <h3 class="practice-title">Litigation & Arbitration</h3>
+                <p class="practice-desc">
+                    Strategic dispute resolution across all jurisdictions
+                </p>
+                <ul class="practice-services">
+                    <li>Supreme Court Matters</li>
+                    <li>Commercial Arbitration</li>
+                    <li>Shareholder Disputes</li>
+                    <li>Constitutional Law</li>
+                    <li>Class Actions</li>
+                </ul>
+            </div>
+
+            <div class="practice-card">
+                <span class="practice-icon">🏗️</span>
+                <h3 class="practice-title">Real Estate & Construction</h3>
+                <p class="practice-desc">
+                    Comprehensive property and construction law services
+                </p>
+                <ul class="practice-services">
+                    <li>Property Acquisition</li>
+                    <li>Construction Contracts</li>
+                    <li>Title Due Diligence</li>
+                    <li>REIT Advisory</li>
+                    <li>Land Development</li>
+                </ul>
+            </div>
+
+            <div class="practice-card">
+                <span class="practice-icon">👥</span>
+                <h3 class="practice-title">Employment & Labor</h3>
+                <p class="practice-desc">
+                    Strategic workforce management and compliance
+                </p>
+                <ul class="practice-services">
+                    <li>Employment Contracts</li>
+                    <li>Labor Compliance</li>
+                    <li>Industrial Relations</li>
+                    <li>Executive Compensation</li>
+                    <li>Workplace Investigations</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partners -->
+    <section id="partners" class="partners-section">
+        <div class="section-header">
+            <div class="section-tag">LEADERSHIP TEAM</div>
+            <h2 class="section-title">Managing Partners</h2>
+            <p class="section-description">
+                Industry-leading legal professionals with decades of combined experience
+            </p>
+        </div>
+        <div class="partners-grid">
+            <div class="partner-card">
+                <div class="partner-photo">👨‍⚖️</div>
+                <div class="partner-info">
+                    <h3 class="partner-name">Advocate MD. Rahman</h3>
+                    <p class="partner-title">Managing Partner</p>
+                    <p class="partner-credentials">
+                        LL.M (Harvard) • LL.B (Dhaka University) • Supreme Court Bar • 25+ Years Experience
+                    </p>
+                    <div class="partner-expertise">
+                        <span class="expertise-badge">CORPORATE LAW</span>
+                        <span class="expertise-badge">M&A</span>
+                        <span class="expertise-badge">SUPREME COURT</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="partner-card">
+                <div class="partner-photo">👩‍⚖️</div>
+                <div class="partner-info">
+                    <h3 class="partner-name">Advocate Tasneem Ahmed</h3>
+                    <p class="partner-title">Senior Partner</p>
+                    <p class="partner-credentials">
+                        LL.M (Oxford) • Barrister (Lincoln's Inn) • IBA Member • 20+ Years Experience
+                    </p>
+                    <div class="partner-expertise">
+                        <span class="expertise-badge">BANKING</span>
+                        <span class="expertise-badge">FINANCE</span>
+                        <span class="expertise-badge">ARBITRATION</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="partner-card">
+                <div class="partner-photo">👨‍⚖️</div>
+                <div class="partner-info">
+                    <h3 class="partner-name">Advocate Kamal Hossain</h3>
+                    <p class="partner-title">Senior Partner</p>
+                    <p class="partner-credentials">
+                        LL.M (London) • CA Qualified • Supreme Court Advocate • 18+ Years Experience
+                    </p>
+                    <div class="partner-expertise">
+                        <span class="expertise-badge">TAX LAW</span>
+                        <span class="expertise-badge">REGULATORY</span>
+                        <span class="expertise-badge">COMPLIANCE</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose -->
+    <section class="why-section">
+        <div class="section-header">
+            <div class="section-tag">COMPETITIVE ADVANTAGE</div>
+            <h2 class="section-title">Why Rahman & Associates</h2>
+        </div>
+        <div class="why-grid">
+            <div class="why-card">
+                <div class="why-icon">🏆</div>
+                <h3 class="why-title">Market Leader</h3>
+                <p class="why-text">
+                    Recognized as Bangladesh's top-tier firm by international legal directories
+                </p>
+            </div>
+            <div class="why-card">
+                <div class="why-icon">🌐</div>
+                <h3 class="why-title">Global Network</h3>
+                <p class="why-text">
+                    Strategic alliances with leading law firms across major jurisdictions
+                </p>
+            </div>
+            <div class="why-card">
+                <div class="why-icon">💡</div>
+                <h3 class="why-title">Innovative Solutions</h3>
+                <p class="why-text">
+                    Cutting-edge legal strategies leveraging technology and market insights
+                </p>
+            </div>
+            <div class="why-card">
+                <div class="why-icon">⚡</div>
+                <h3 class="why-title">Rapid Response</h3>
+                <p class="why-text">
+                    24/7 availability for urgent matters and time-sensitive transactions
+                </p>
+            </div>
+            <div class="why-card">
+                <div class="why-icon">🎯</div>
+                <h3 class="why-title">Client-Centric</h3>
+                <p class="why-text">
+                    Dedicated teams providing personalized service and strategic counsel
+                </p>
+            </div>
+            <div class="why-card">
+                <div class="why-icon">📊</div>
+                <h3 class="why-title">Industry Expertise</h3>
+                <p class="why-text">
+                    Deep sector knowledge across banking, energy, technology, and more
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="contact-section">
+        <div class="section-header">
+            <div class="section-tag">GET IN TOUCH</div>
+            <h2 class="section-title">Let's Discuss Your Legal Needs</h2>
+        </div>
+        <div class="contact-container">
+            <div class="contact-info">
+                <h2>Contact Us</h2>
+                <p>
+                    Our team is ready to provide strategic legal counsel for your business. 
+                    Schedule a confidential consultation today.
+                </p>
+                <div class="contact-details">
+                    <div class="contact-item">
+                        <div class="contact-icon">📍</div>
+                        <div class="contact-text">
+                            <h4>Head Office</h4>
+                            <p>Gulshan Corporate Center<br>Plot 32, Road 11, Gulshan-1<br>Dhaka-1212, Bangladesh</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📞</div>
+                        <div class="contact-text">
+                            <h4>Phone & Fax</h4>
+                            <p>Tel: +880 2-8833XXXX<br>Mobile: +880 1XXX-XXXXXX<br>Fax: +880 2-8833XXXX</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">✉️</div>
+                        <div class="contact-text">
+                            <h4>Email</h4>
+                            <p>info@raassociates.com<br>consult@raassociates.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">⏰</div>
+                        <div class="contact-text">
+                            <h4>Business Hours</h4>
+                            <p>Sunday - Thursday: 9:00 AM - 7:00 PM<br>Saturday: 10:00 AM - 3:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-map">🗺️</div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h3>Rahman & Associates Legal</h3>
+                <p>
+                    A leading full-service law firm in Bangladesh, delivering sophisticated legal solutions 
+                    to corporations, financial institutions, and international clients since 2005.
+                </p>
+                <p style="color: #c5a367; font-weight: 600;">
+                    Bangladesh Bar Council Registered | Supreme Court Advocates
+                </p>
+            </div>
+            <div class="footer-links">
+                <h4>Practice Areas</h4>
+                <ul>
+                    <li><a href="#practice">Corporate & M&A</a></li>
+                    <li><a href="#practice">Banking & Finance</a></li>
+                    <li><a href="#practice">International Trade</a></li>
+                    <li><a href="#practice">Litigation</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Firm</h4>
+                <ul>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#partners">Partners</a></li>
+                    <li><a href="#contact">Careers</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#practice">Legal Insights</a></li>
+                    <li><a href="#practice">Publications</a></li>
+                    <li><a href="#practice">News & Updates</a></li>
+                    <li><a href="#practice">Client Portal</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-tagline">"Strategic Legal Excellence | Trusted by Bangladesh's Leading Corporations"</p>
+            <p class="footer-copyright">
+                © 2026 Rahman & Associates Legal | All Rights Reserved | Attorney Advertising<br>
+                Confidential & Privileged Communications
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

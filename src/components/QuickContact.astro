@@ -1,0 +1,29 @@
+---
+import type { Lang } from "../i18n/strings";
+import { t } from "../i18n/strings";
+
+interface Props {
+  lang: Lang;
+  contact?: {
+    phone?: string;
+    email?: string;
+    whatsapp?: string;
+    bookingUrl?: string;
+  };
+}
+
+const { lang, contact } = Astro.props as Props;
+const hasAny = Boolean(
+  contact?.phone || contact?.email || contact?.whatsapp || contact?.bookingUrl
+);
+---
+{hasAny && (
+  <div class="quick-contact">
+    {contact?.phone && <a href={`tel:${contact.phone}`}>{t(lang, "call")}</a>}
+    {contact?.whatsapp && (
+      <a href={`https://wa.me/${contact.whatsapp}`}>{t(lang, "whatsapp")}</a>
+    )}
+    {contact?.email && <a href={`mailto:${contact.email}`}>{t(lang, "email")}</a>}
+    {contact?.bookingUrl && <a href={contact.bookingUrl}>{t(lang, "book")}</a>}
+  </div>
+)}

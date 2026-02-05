@@ -1,0 +1,85 @@
+---
+interface FooterLinks {
+  practiceAreas?: string[];
+  firm?: string[];
+  resources?: string[];
+}
+
+interface Props {
+  brandName: string;
+  brandDescription?: string;
+  brandCredential?: string;
+  footerLinks?: FooterLinks;
+  tagline?: string;
+  motto?: string;
+  lang?: "bn" | "en";
+}
+
+const {
+  brandName,
+  brandDescription,
+  brandCredential,
+  footerLinks,
+  tagline,
+  motto,
+  lang = "en"
+} = Astro.props;
+
+const year = new Date().getFullYear();
+const disclaimer = lang === "bn"
+  ? "এটি একটি ডিরেক্টরি প্রোফাইল; এটি কোনো আইনি পরামর্শ নয়।"
+  : "This is a directory profile, not legal advice.";
+---
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <h3>⚖️ {brandName}</h3>
+      {brandDescription && <p>{brandDescription}</p>}
+      {brandCredential && <p style="color: var(--accent); font-weight: 600;">{brandCredential}</p>}
+    </div>
+
+    {footerLinks?.practiceAreas && footerLinks.practiceAreas.length > 0 && (
+      <div class="footer-links">
+        <h4>{lang === "bn" ? "আইনি সেবা" : "Practice Areas"}</h4>
+        <ul>
+          {footerLinks.practiceAreas.map((area) => (
+            <li><a href="#services">{area}</a></li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    {footerLinks?.firm && footerLinks.firm.length > 0 && (
+      <div class="footer-links">
+        <h4>{lang === "bn" ? "প্রতিষ্ঠান" : "Firm"}</h4>
+        <ul>
+          {footerLinks.firm.map((link) => (
+            <li><a href="#about">{link}</a></li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    {footerLinks?.resources && footerLinks.resources.length > 0 && (
+      <div class="footer-links">
+        <h4>{lang === "bn" ? "রিসোর্স" : "Resources"}</h4>
+        <ul>
+          {footerLinks.resources.map((link) => (
+            <li><a href="#">{link}</a></li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </div>
+
+  <div class="footer-bottom">
+    {(tagline || motto) && (
+      <p class="footer-tagline">"{tagline || motto}"</p>
+    )}
+    <p class="footer-copyright">
+      &copy; {year} {brandName} | All Rights Reserved<br />
+      {disclaimer}
+    </p>
+  </div>
+</footer>

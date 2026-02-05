@@ -1,0 +1,67 @@
+---
+interface Service {
+  icon?: string;
+  title: string;
+  description?: string;
+}
+
+interface Props {
+  services: Service[];
+}
+
+const { services } = Astro.props;
+
+const defaultIcons: Record<string, string> = {
+  "Supreme Court": "gavel",
+  "Corporate": "building",
+  "Banking": "bank",
+  "Property": "home",
+  "International": "globe",
+  "Intellectual": "lightbulb",
+  "Tax": "calculator",
+  "Criminal": "shield",
+  "Family": "users",
+  "Labor": "briefcase"
+};
+
+const getIcon = (service: Service): string => {
+  if (service.icon) return service.icon;
+  for (const [key, icon] of Object.entries(defaultIcons)) {
+    if (service.title.includes(key)) return icon;
+  }
+  return "scale";
+};
+
+const iconMap: Record<string, string> = {
+  "courthouse": "🏛️",
+  "building": "🏢",
+  "bank": "💼",
+  "home": "🏠",
+  "globe": "🌍",
+  "lightbulb": "⚡",
+  "calculator": "📊",
+  "shield": "🛡️",
+  "users": "👥",
+  "briefcase": "💼",
+  "scale": "⚖️",
+  "gavel": "🔨"
+};
+---
+
+{services.length > 0 && (
+  <div class="cards-grid">
+    {services.map((service) => {
+      const iconKey = getIcon(service);
+      const emoji = iconMap[iconKey] || service.icon || "⚖️";
+      return (
+        <div class="card">
+          <span class="card-icon">{emoji}</span>
+          <h3 class="card-title">{service.title}</h3>
+          {service.description && (
+            <p class="card-description">{service.description}</p>
+          )}
+        </div>
+      );
+    })}
+  </div>
+)}
