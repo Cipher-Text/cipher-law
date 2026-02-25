@@ -5,11 +5,12 @@ import Navbar from "../../components/Navbar.astro";
 import PremiumFooter from "../../components/PremiumFooter.astro";
 import SeoHead from "../../components/SeoHead.astro";
 import { t } from "../../i18n/strings";
-import districts from "../../content/lookups/districts.json";
-import practiceAreas from "../../content/lookups/practice-areas.json";
+import districts from "../../data/districts.json";
+import practiceAreas from "../../data/practice-areas.json";
 import "../../styles/global.css";
 
 const lang = "en" as const;
+const baseUrl = import.meta.env.BASE_URL;
 
 const nameFor = (items: any[], id?: string) => {
   const match = items.find((item) => item.id === id);
@@ -33,7 +34,7 @@ const toCard = (entry: any) => {
   const typeSegment = entry.data.type === "advocate" ? "a" : entry.data.type === "chamber" ? "c" : "f";
   return {
     title: entry.data.title,
-    href: `/en/${typeSegment}/${entry.slug}`,
+    href: `${baseUrl}/en/${typeSegment}/${entry.slug}`,
     type: entry.data.type,
     district: districtName,
     practiceAreas: practiceNames,

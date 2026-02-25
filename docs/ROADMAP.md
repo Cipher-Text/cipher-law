@@ -1,84 +1,92 @@
-# Roadmap & Future Tasks
+# Roadmap
 
-## Phase 1 — Foundation (Current)
+---
 
-- [x] Astro project setup with TypeScript
-- [x] Three layout types (Advocate, Chamber, Firm)
-- [x] Bilingual routing (bn/en)
-- [x] Zod content validation schemas
-- [x] 19 reusable components
-- [x] Design system (dark + gold theme)
-- [x] Directory listing with client-side search
-- [x] Demo content for all three types
-- [x] Lookup data (districts, courts, thanas, practice areas)
-- [x] SEO component with OpenGraph + structured data
-- [x] Verification badge system (3 tiers)
+## Phase 1 — Foundation (complete)
 
-## Phase 2 — Content & Polish
+- [x] Astro 5 project with TypeScript strict mode
+- [x] Three layout types: Advocate, Chamber, Firm
+- [x] Bilingual routing (`/en/` and `/bn/`) with language toggle
+- [x] Zod schema validation for all content collections
+- [x] 19 reusable Astro components
+- [x] Dark + gold design system with CSS custom properties
+- [x] Directory home pages with client-side search (data-* attributes, no JS framework)
+- [x] Demo content for all three profile types in English and Bengali
+- [x] Lookup reference data: districts, courts, thanas, practice areas in `src/data/`
+- [x] SEO component: canonical, hreflang alternates, JSON-LD structured data
+- [x] Three-tier verification badge system
+- [x] GitHub Actions CI/CD pipeline → GitHub Pages
+- [x] `base: '/cipher-law'` configured for GitHub Pages sub-path
+- [x] All internal paths use `import.meta.env.BASE_URL` — no hardcoded `/en/` strings
 
-- [ ] **Expand lookup data** — Add all 64 Bangladesh districts, major courts nationwide, all thanas
-- [ ] **Photo/image support** — Profile photos, firm logos, gallery section
-- [ ] **FAQs section component** — Per-profile FAQ accordion
-- [ ] **QR code generation** — Auto-generate QR linking to profile
-- [ ] **vCard download** — Generate .vcf file from contact data
-- [ ] **404 page** — Custom not-found page matching design system
-- [ ] **Sitemap generation** — Auto XML sitemap for SEO
-- [ ] **RSS feed** — For legal news/blog if added
-- [ ] **Print stylesheet** — Clean print layout for profiles
-- [ ] **Accessibility audit** — WCAG 2.1 AA compliance, ARIA labels, keyboard navigation
-- [ ] **Performance optimization** — Image optimization, critical CSS, lazy loading
-- [ ] **Social sharing** — OpenGraph images auto-generated per profile
+---
 
-## Phase 3 — Dynamic Features
+## Phase 2 — Content & polish
 
-- [ ] **Admin dashboard** — Manage profiles, verifications, billing
-- [ ] **Self-service profile editor** — Lawyers create/edit their own profiles
-- [ ] **Authentication system** — Login for profile owners and admin
-- [ ] **Payment integration** — bKash, Nagad, SSLCommerz for subscriptions
-- [ ] **Verification workflow** — Submit → Review → Approve pipeline
-- [ ] **Analytics** — Profile views, contact clicks, search appearances
-- [ ] **Contact form** — Inquiry form on profiles (store in DB or forward via email)
-- [ ] **Appointment booking** — Calendar integration for consultations
-- [ ] **Review/rating system** — Client testimonials on profiles
+- [ ] Expand lookup data to all 64 Bangladesh districts
+- [ ] Expand courts to cover major courts nationwide
+- [ ] Expand thanas to all major urban areas
+- [ ] Photo / image support for team members and partners
+- [ ] FAQ accordion section per profile
+- [ ] QR code generation (links to the profile URL)
+- [ ] vCard download (`.vcf` from contact data)
+- [ ] Custom 404 page matching the design system
+- [ ] XML sitemap (`/sitemap.xml`) for SEO
+- [ ] Print stylesheet for clean profile printing
+- [ ] WCAG 2.1 AA accessibility audit (ARIA labels, keyboard navigation, colour contrast)
+- [ ] Open Graph social sharing images per profile
+- [ ] `public/robots.txt` and `public/favicon.ico`
 
-## Phase 4 — Scale & Marketplace
+---
 
-- [ ] **Full-text search** — Server-side search with Algolia or Meilisearch
-- [ ] **Map view** — Interactive map of legal professionals by location
-- [ ] **Legal blog/news** — Content marketing with Astro content collections
-- [ ] **Document templates** — Downloadable legal document templates (paid)
-- [ ] **Consultation marketplace** — Online booking + video consultation
-- [ ] **Lawyer comparison** — Side-by-side profile comparison tool
-- [ ] **Mobile app** — React Native or PWA for client access
-- [ ] **API** — Public API for profile data (for integrations)
-- [ ] **White-label** — Custom branded sites for large firms
-- [ ] **Multi-country expansion** — India, Pakistan, Myanmar legal markets
+## Phase 3 — Dynamic features
 
-## Technical Debt & Improvements
+These require migrating from static to Astro hybrid/SSR mode with a database backend.
 
-- [ ] **Component tests** — Unit tests for Astro components
-- [ ] **E2E tests** — Playwright tests for critical user flows
-- [ ] **CI/CD pipeline** — GitHub Actions for build + deploy
-- [ ] **Content linting** — Validate markdown frontmatter in CI
-- [ ] **Bundle analysis** — Monitor CSS/JS size
-- [ ] **Error tracking** — Client-side error reporting (Sentry)
-- [ ] **Staging environment** — Preview deployments for content review
-- [ ] **Image CDN** — Cloudinary or similar for responsive images
-- [ ] **CSS refactor** — Extract global.css into component-scoped styles
-- [ ] **i18n expansion** — Add more UI string translations as features grow
+- [ ] Admin dashboard for profile management and verification
+- [ ] Self-service profile editor (authenticated profile owners)
+- [ ] Authentication system
+- [ ] Payment integration: bKash, Nagad, SSLCommerz
+- [ ] Verification workflow: document upload → review → approve
+- [ ] Profile analytics: page views, contact clicks
+- [ ] Contact form with email delivery
+- [ ] Appointment / consultation booking
+- [ ] Client reviews and ratings
 
-## Migration Path (Static → Dynamic)
+---
 
-When Phase 3 features require a backend:
+## Phase 4 — Scale
 
-```
-Current:  Astro (static) → Netlify/Vercel (CDN)
+- [ ] Full-text search (Algolia or Meilisearch)
+- [ ] Interactive map view (district / thana filtering with pins)
+- [ ] Legal blog / news section
+- [ ] Lawyer comparison tool
+- [ ] Consultation marketplace
+- [ ] Mobile app (PWA or React Native)
+- [ ] Public API for profile data
+- [ ] White-label sites for large firms
+- [ ] Multi-country expansion (India, Pakistan, Myanmar)
 
-Future:   Astro (hybrid/SSR mode)
-          ├── Static pages: profiles, directory (pre-built)
-          ├── Server pages: dashboard, editor, auth
-          ├── API routes: /api/profiles, /api/auth
-          └── Database: PostgreSQL or Supabase
-```
+---
 
-Astro supports hybrid rendering — static pages stay fast, dynamic pages get server-side rendering. No framework migration needed.
+## Technical debt
+
+- [ ] Replace `any` TypeScript types in layout files with proper interfaces
+- [ ] Extract duplicated home page logic from `en/index.astro` and `bn/index.astro` into a shared component
+- [ ] Add Playwright end-to-end tests for built output
+- [ ] Add content linting step to CI (validate frontmatter in pull requests, not just on merge)
+- [ ] Bundle size monitoring
+
+---
+
+## Migration path (Phase 2 → Phase 3)
+
+When dynamic features are needed:
+
+1. Add `output: 'hybrid'` to `astro.config.mjs`
+2. Add a database adapter (Astro DB, Supabase, or similar)
+3. Convert admin-facing routes to server-rendered endpoints
+4. Keep all profile pages as static pre-rendered routes
+5. Only the management and auth layer needs SSR — profiles stay fast
+
+No framework migration is needed. Astro supports hybrid rendering natively.

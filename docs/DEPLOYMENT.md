@@ -1,151 +1,218 @@
-# Deployment Guide
+# Deployment
 
-## Current Setup
+Cipher Law is deployed to GitHub Pages via GitHub Actions. Every push to `main` triggers an automated build and deployment.
 
-Static site — output is plain HTML/CSS/JS in `/dist/`. No server runtime required.
+---
 
-```bash
-npm run build    # generates /dist/
+## Live site
+
+```
+https://cipher-text.github.io/cipher-law/
 ```
 
-## Hosting Options
+---
 
-### Vercel (Recommended)
+## How it works
 
-```bash
-npm i -g vercel
-vercel
-```
+The workflow at `.github/workflows/deploy.yml`:
 
-- Zero config for Astro
-- Automatic HTTPS
-- Preview deployments per branch/PR
-- Free tier: 100GB bandwidth, unlimited sites
-- Bangladesh CDN edge locations
+1. Checks out the repository
+2. Sets up Node 20 with npm cache
+3. Runs `npm install` and `npm run build`
+4. Uploads `/dist` as a GitHub Pages artifact
+5. Deploys the artifact to GitHub Pages
 
-### Netlify
+The process takes under 2 minutes. Once pushed to `main`, the live site updates automatically.
 
-```bash
-npm i -g netlify-cli
-netlify deploy --prod --dir=dist
-```
+---
 
-- Build command: `npm run build`
-- Publish directory: `dist`
-- Free tier: 100GB bandwidth, 300 build minutes/month
-
-### GitHub Pages
-
-In `astro.config.mjs`:
-```js
-export default defineConfig({
-  site: 'https://username.github.io',
-  base: '/cipher-law',
-});
-```
-
-Deploy via GitHub Actions (see CI/CD section below).
-
-### Cloudflare Pages
-
-- Connect GitHub repo
-- Build command: `npm run build`
-- Output directory: `dist`
-- Free tier: unlimited bandwidth
-
-## Domain Setup
-
-### Recommended Domains
-- `cipher-law.com` or `cipherlaw.com`
-- `cipher-law.com.bd` (Bangladesh ccTLD)
-- Custom `.law` TLD if available
-
-### DNS Configuration
-Point domain to hosting provider:
-- **Vercel:** Add CNAME to `cname.vercel-dns.com`
-- **Netlify:** Add CNAME to `[site].netlify.app`
-- **Cloudflare Pages:** Add CNAME to `[project].pages.dev`
-
-SSL is automatic with all providers above.
-
-## CI/CD Pipeline (GitHub Actions)
+## Workflow file
 
 ```yaml
-# .github/workflows/deploy.yml
-name: Deploy
+name: Deploy Astro to GitHub Pages
 
 on:
   push:
     branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
-      - run: npm ci
-      - run: npm run build
+      - name: Install deps
+        run: npm install
 
-      # Vercel
-      - uses: amondnet/vercel-action@v25
+      - name: Build
+        run: npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
+          path: ./dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
 ```
 
-### Build Validation Step (Optional)
+---
 
-```yaml
-      - name: Check build output
-        run: |
-          test -d dist
-          test -f dist/index.html
-          echo "Build successful: $(find dist -name '*.html' | wc -l) pages generated"
+## First-time GitHub Pages setup
+
+If you fork this repo or set it up fresh:
+
+1. Go to the repository **Settings → Pages**
+2. Under **Source**, select **GitHub Actions**
+3. Push to `main` — the first deployment runs automatically
+
+No further configuration needed. `astro.config.mjs` is already set up:
+
+```js
+export default defineConfig({
+  site: 'https://cipher-text.github.io',
+  base: '/cipher-law',
+});
 ```
 
-## Environment Variables
+---
 
-Currently none required. Future phases may need:
+## Custom domain
+
+To serve the site from a custom domain (e.g., `cipher-law.com.bd`):
+
+**1.** Add a `CNAME` file to the `public/` folder:
+```
+cipher-law.com.bd
+```
+
+**2.** Configure DNS at your registrar:
+```
+@ CNAME cipher-text.github.io
+```
+For apex domains, use GitHub's IP addresses (see GitHub Pages documentation).
+
+**3.** In repository **Settings → Pages**, enter the custom domain and enable **Enforce HTTPS**.
+
+**4.** Update `astro.config.mjs` — remove `base` and update `site`:
+```js
+export default defineConfig({
+  site: 'https://cipher-law.com.bd',
+});
+```
+
+With a custom domain the site lives at the root, so the `/cipher-law/` base prefix is no longer needed. All `import.meta.env.BASE_URL` references in the source will resolve to `/` automatically.
+
+---
+
+## Alternative hosting
+
+The `/dist` output is standard static HTML/CSS/JS and works on any static host.
+
+### Netlify
+
+Connect the GitHub repo in the Netlify dashboard:
+- Build command: `npm run build`
+- Publish directory: `dist`
+
+Remove `base` from `astro.config.mjs` and update `site` to your Netlify URL.
+
+### Cloudflare Pages
+
+Connect the GitHub repo in the Cloudflare Pages dashboard:
+- Build command: `npm run build`
+- Build output directory: `dist`
+
+Cloudflare Pages offers unlimited bandwidth on the free tier.
+
+### Manual
+
+```bash
+npm run build
+# Upload /dist to any web server or CDN
+```
+
+---
+
+## Content deployment workflow
+
+```
+Edit a .md file in src/content/
+        ↓
+git add  →  git commit  →  git push origin main
+        ↓
+GitHub Actions: install → build (Zod validates all frontmatter)
+        ↓
+Build passes → deploys to GitHub Pages (~60 seconds total)
+        ↓
+Live at https://cipher-text.github.io/cipher-law/
+```
+
+If the build fails (e.g., invalid frontmatter), GitHub Actions reports the error and the previous version stays live.
+
+---
+
+## Build validation
+
+Run locally before pushing to catch errors early:
+
+```bash
+npm run build
+```
+
+A successful build outputs:
+
+```
+[build] output: "static"
+[build] 9 page(s) built in ~4s
+[build] Complete!
+```
+
+Each `.md` file in `src/content/` generates one HTML page. A Zod schema error prints the field name and the validation failure.
+
+---
+
+## Environment variables
+
+None required. The site URL and base path are set in `astro.config.mjs`. Future phases may need:
 
 | Variable | Phase | Purpose |
 |----------|-------|---------|
-| `SITE_URL` | 2+ | Canonical URL for SEO |
 | `SUPABASE_URL` | 3 | Database connection |
 | `SUPABASE_KEY` | 3 | Database auth |
 | `BKASH_API_KEY` | 3 | Payment processing |
 | `SSLCOMMERZ_STORE_ID` | 3 | Payment processing |
 
-## Content Deployment Workflow
+---
 
-Since content is in markdown files, the deployment flow is:
+## Performance targets
 
-```
-1. Create/edit .md file in src/content/{lang}_{type}/
-2. Run `npm run build` locally to validate
-3. Commit and push to main
-4. CI builds and deploys automatically
-5. New profile is live in ~60 seconds
-```
-
-## Performance Targets
-
-| Metric | Target | How |
-|--------|--------|-----|
-| Lighthouse Performance | 95+ | Static HTML, minimal JS |
-| First Contentful Paint | < 1.5s | No blocking resources |
-| Total Blocking Time | < 200ms | Zero client framework JS |
-| CLS | < 0.1 | No layout shifts (no dynamic content) |
-| Build time | < 30s | Astro is fast; few pages currently |
-
-## Monitoring
-
-- **Uptime:** Use free tier of UptimeRobot or Better Stack
-- **Analytics:** Plausible or Umami (privacy-friendly, no cookie banner needed)
-- **Error tracking:** Not critical for static site; add Sentry if dynamic features added
+| Metric | Target |
+|--------|--------|
+| Lighthouse score | 95+ |
+| First Contentful Paint | < 1.5s |
+| Total Blocking Time | < 200ms |
+| Cumulative Layout Shift | < 0.1 |
+| Build time | < 30s |

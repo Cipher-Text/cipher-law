@@ -1,96 +1,114 @@
 # Pricing & Business Model
 
-## Revenue Model
+---
 
-Cipher Law is a **B2B SaaS directory** for Bangladesh legal professionals. Revenue comes from profile subscriptions and verification services.
+## Revenue model
 
-## Proposed Tier Structure
+Cipher Law is a B2B SaaS directory for Bangladesh legal professionals. Revenue comes from profile subscriptions and one-time verification fees. The directory is free for the public to browse.
 
-### Free Tier
-- Basic directory listing (name, location, practice area)
-- Standard card on directory page
+---
+
+## Subscription tiers
+
+### Free
+- Basic listing in the directory (name, type, district only)
 - No dedicated portfolio page
+- No contact details
 - No verification badge
 
-### Standard — ৳2,000/month (~$18 USD)
-- Dedicated portfolio page (`/a/slug`, `/c/slug`, or `/f/slug`)
-- Full sections: hero, services, expertise, contact
-- Basic SEO (title, description, canonical)
-- Bengali + English pages
+### Standard — ৳2,000 / month (~$18)
+- Dedicated portfolio page at `/cipher-law/en/a/[slug]` etc.
+- Full sections: hero, stats, services, credentials, contact
+- Bilingual (English + Bengali pages)
 - Tier 1 verification badge (self-reported)
 - Email support
 
-### Professional — ৳5,000/month (~$45 USD)
+### Professional — ৳5,000 / month (~$45)
 - Everything in Standard
-- Tier 2 verification (Bar Council ID verified)
-- Priority placement in directory search
-- `show` toggle for all sections
-- Social links, WhatsApp integration
-- Team/partner profiles (chamber/firm)
-- Court associations display
-- Quick contact floating button
+- Tier 2 verification (Bar Council ID checked)
+- Priority placement in directory listings
+- All `show` section toggles enabled
+- Social links
+- Team / partner profiles
+- Court associations
+- WhatsApp quick contact button
+- Service type badges
 
-### Premium — ৳12,000/month (~$110 USD)
+### Premium — ৳12,000 / month (~$110)
 - Everything in Professional
 - Tier 3 verification (full background check)
 - Featured badge on directory card
 - Top placement in search results
-- Custom QR code and vCard download
-- OpenGraph image generation
-- Structured data (schema.org) for Google rich results
-- Analytics dashboard (future)
+- Custom QR code and vCard download *(Phase 2)*
+- Open Graph social sharing image *(Phase 2)*
+- Profile analytics dashboard *(Phase 3)*
 - Dedicated account manager
 
-## Verification Pricing (One-Time)
+---
 
-| Service | Price | Includes |
-|---------|-------|----------|
-| Bar Council ID check | ৳1,000 | Verify enrollment number against Bar Council records |
-| Bar Association membership | ৳500 | Confirm active membership status |
-| Chamber verification | ৳2,000 | Physical address + team confirmation |
-| Full background check | ৳5,000 | All above + credential verification + reference check |
+## Verification fees (one-time)
 
-## Payment Considerations
+| Check | Fee |
+|-------|-----|
+| Bar Council ID verification | ৳1,000 |
+| Bar Association membership confirmation | ৳500 |
+| Chamber registration check | ৳2,000 |
+| Full background check (Tier 3) | ৳5,000 |
 
-- **Currency:** BDT (Bangladeshi Taka) primary, USD for international
-- **Payment gateways:** bKash, Nagad, Rocket (mobile banking), bank transfer, card (SSLCommerz)
-- **Billing cycle:** Monthly or annual (2 months free on annual)
+Verification is handled manually. After payment, the `verification` fields in the profile frontmatter are updated and the badge is displayed on the next deployment.
+
+---
+
+## Billing
+
+- **Currency:** BDT primary, USD for international clients
+- **Payment gateways:** bKash, Nagad, Rocket, bank transfer, SSLCommerz *(Phase 3)*
+- **Billing cycles:** Monthly or annual (2 months free on annual)
 - **Trial:** 14-day free trial on Standard tier
 
-## Cost Structure
+---
 
-| Item | Monthly Cost | Notes |
-|------|-------------|-------|
-| Hosting (static) | $0–20 | Netlify/Vercel free tier covers most usage |
-| Domain | ~$12/year | .com.bd or .law domain |
-| SSL | $0 | Included with hosting |
-| Build minutes | $0 | Well within free tier limits |
-| CDN | $0 | Included with Netlify/Vercel |
+## Operating costs
 
-**Gross margin is very high** — static hosting has near-zero variable cost per profile.
+| Item | Cost |
+|------|------|
+| Hosting (GitHub Pages) | Free |
+| Domain (`cipher-law.com.bd` or similar) | ~৳1,200 / year |
+| SSL certificate | Included with GitHub Pages |
+| GitHub Actions build minutes | Free tier (2,000 min / month) |
+| CDN | Included |
+| **Total** | **~৳1,200 / year** |
 
-## Monetization Roadmap
+Gross margins are very high in Phase 1 and 2 — static hosting has near-zero variable cost per additional profile.
 
-### Phase 1 (Current)
+---
+
+## Target market
+
+- ~80,000 enrolled advocates in Bangladesh (Bangladesh Bar Council)
+- ~40,000 estimated active practitioners
+- ~5,000 chambers in Dhaka division
+- ~500 registered law firms
+
+At 1% penetration of active practitioners ≈ 400 subscribers.
+At an average of ৳3,500 / month per subscriber ≈ ৳1,400,000 / month (~$12,700).
+
+---
+
+## Monetisation roadmap
+
+### Phase 1 (current)
 - Manual content management via markdown files
 - Direct client onboarding (manual profile creation)
-- Payment via bank transfer / mobile banking
+- Payment via bank transfer or mobile banking
 
 ### Phase 2
-- Self-service profile editor (authenticated)
-- Online payment integration (bKash/SSLCommerz)
-- Automated tier management
+- Self-service profile editor
+- Online payment integration (bKash / SSLCommerz)
+- Automated tier enforcement
 
 ### Phase 3
 - Lead generation (client inquiries routed to lawyers)
 - Sponsored placements in directory
 - Legal marketplace (document templates, consultation booking)
 - White-label portfolio sites for firms
-
-## Target Market Size
-
-- **Bangladesh Bar Council** has ~80,000+ enrolled advocates
-- **Active practicing lawyers** estimated at 40,000+
-- **Law chambers** in Dhaka alone: 5,000+
-- **Registered law firms:** 500+
-- Even 1% penetration = 400+ paying subscribers
