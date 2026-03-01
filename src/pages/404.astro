@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar.astro";
 import PremiumFooter from "../components/PremiumFooter.astro";
 import "../styles/global.css";
 
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
 <!doctype html>
@@ -12,6 +12,13 @@ const base = import.meta.env.BASE_URL;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>404 – Page Not Found | Cipher Law</title>
+    <script is:inline>
+      const path = window.location.pathname;
+      const hasFileExtension = /\.[^/]+$/.test(path);
+      if (!path.endsWith("/") && !hasFileExtension) {
+        window.location.replace(`${path}/${window.location.search}${window.location.hash}`);
+      }
+    </script>
   </head>
   <body>
     <Navbar brandName="Cipher Law" lang="en" />

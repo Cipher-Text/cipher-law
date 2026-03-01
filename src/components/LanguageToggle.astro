@@ -2,7 +2,11 @@
 import { getCollection } from "astro:content";
 import type { Lang } from "../i18n/strings";
 
-const segments = Astro.url.pathname.split("/").filter(Boolean);
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+const normalizedPath = Astro.url.pathname.startsWith(basePath)
+  ? Astro.url.pathname.slice(basePath.length)
+  : Astro.url.pathname;
+const segments = normalizedPath.split("/").filter(Boolean);
 const currentLang = (segments[0] === "bn" ? "bn" : "en") as Lang;
 const otherLang: Lang = currentLang === "bn" ? "en" : "bn";
 const typeSegment = segments[1];
@@ -28,10 +32,10 @@ if (targetCollection && slug) {
   hasCounterpart = entries.some((entry) => entry.slug === slug);
 }
 
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const target = hasCounterpart && typeSegment && slug
-  ? `${base}/${otherLang}/${typeSegment}/${slug}`
-  : `${base}/${otherLang}`;
+  ? `${base}/${otherLang}/${typeSegment}/${slug}/`
+  : `${base}/${otherLang}/`;
 const label = otherLang === "bn" ? "বাংলা" : "English";
 ---
 <a href={target} aria-label={`Switch to ${label}`}>{label}</a>
