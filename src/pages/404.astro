@@ -14,9 +14,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, "");
     <title>404 – Page Not Found | Cipher Law</title>
     <script is:inline>
       const path = window.location.pathname;
+      const search = window.location.search;
+      const hash = window.location.hash;
       const hasFileExtension = /\.[^/]+$/.test(path);
-      if (!path.endsWith("/") && !hasFileExtension) {
-        window.location.replace(`${path}/${window.location.search}${window.location.hash}`);
+      const legacyBase = "/cipher-law";
+
+      if (path === legacyBase || path.startsWith(`${legacyBase}/`)) {
+        const stripped = path.slice(legacyBase.length) || "/";
+        window.location.replace(`${stripped}${search}${hash}`);
+      } else if (!path.endsWith("/") && !hasFileExtension) {
+        window.location.replace(`${path}/${search}${hash}`);
       }
     </script>
   </head>
